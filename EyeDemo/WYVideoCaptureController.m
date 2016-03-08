@@ -263,6 +263,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 #pragma mark - ButtonClick
 - (void)scanBtnClick:(UIButton *)btn{
     PictureScanViewController *scanVc = [[PictureScanViewController alloc] init];
+    scanVc.pictureSign = _pictureSign;
     [self.navigationController pushViewController:scanVc animated:YES];
 }
 - (void)closeBtnClick {
@@ -332,6 +333,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 /// @param isPhoto YES->拍照  NO->视频录制
 - (void)ChangeToLeft:(BOOL)isLeft{
     [self restoreBtn];
+    [self initTakenParameters];
     _isLeftEye = isLeft;
     NSString *centerTitle = isLeft ? @"左眼" : @"右眼";
     [_centerBtn setTitle:centerTitle forState:UIControlStateNormal];
