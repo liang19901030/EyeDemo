@@ -151,6 +151,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         //trashBtn.backgroundColor = [UIColor whiteColor];
         trashBtn.frame = CGRectMake(0, 0, 30, 30);
         [trashBtn setTitle:@"删除" forState:UIControlStateNormal];
+        [trashBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [trashBtn addTarget:self action:@selector(trashClick) forControlEvents:UIControlEventTouchUpInside];
         self.trashBtn = trashBtn;
     }
