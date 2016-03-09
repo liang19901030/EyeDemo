@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ShootCollectionButton.h"
 
 @interface ShootCollectionHeaderView : UIView
 
 @property (nonatomic, strong) UILabel *typeNameLabel;
+@property (nonatomic, strong) ShootCollectionButton *chooseBtn;
 
 @end

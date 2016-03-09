@@ -33,6 +33,7 @@
 		5D6B83AF1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83AE1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m */; };
 		5D6B83B31C8FEC4B004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83B21C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m */; };
 		5D6B83B61C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */; };
+		5D6B83EA1C9018F3004EB9B1 /* ShootCollectionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83E91C9018F3004EB9B1 /* ShootCollectionButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,8 @@
 		5D6B83B21C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSelectPhotoPickerBrowserPhotoImageView.m; sourceTree = "<group>"; };
 		5D6B83B41C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLSelectPhotoPickerBrowserPhotoView.h; sourceTree = "<group>"; };
 		5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSelectPhotoPickerBrowserPhotoView.m; sourceTree = "<group>"; };
+		5D6B83E81C9018F3004EB9B1 /* ShootCollectionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShootCollectionButton.h; sourceTree = "<group>"; };
+		5D6B83E91C9018F3004EB9B1 /* ShootCollectionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShootCollectionButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +169,8 @@
 				5D6B83541C8EA97A004EB9B1 /* PictureScanViewController.m */,
 				5D6B83591C8EAB1F004EB9B1 /* ShootCollectionHeaderView.h */,
 				5D6B835A1C8EAB1F004EB9B1 /* ShootCollectionHeaderView.m */,
+				5D6B83E81C9018F3004EB9B1 /* ShootCollectionButton.h */,
+				5D6B83E91C9018F3004EB9B1 /* ShootCollectionButton.m */,
 				5D6B83561C8EA9F8004EB9B1 /* ShootCollectionViewCell.h */,
 				5D6B83571C8EA9F8004EB9B1 /* ShootCollectionViewCell.m */,
 				5D6B83501C8EA267004EB9B1 /* JRMediaFileManage.h */,
@@ -365,6 +370,7 @@
 				5D6B83481C8E97C6004EB9B1 /* LX_layoutAttributes.m in Sources */,
 				5D6B83AC1C8FEB95004EB9B1 /* UIView+MLExtension.m in Sources */,
 				5D6B83491C8E97C6004EB9B1 /* NSTimer+Addtion.m in Sources */,
+				5D6B83EA1C9018F3004EB9B1 /* ShootCollectionButton.m in Sources */,
 				5D6B834D1C8E97C6004EB9B1 /* WYTopImgBtn.m in Sources */,
 				5D6B83AF1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m in Sources */,
 				5D6B834F1C8E97C6004EB9B1 /* WYVideoTimeView.m in Sources */,

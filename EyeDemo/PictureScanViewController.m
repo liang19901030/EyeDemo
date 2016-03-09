@@ -12,11 +12,14 @@
 #import "JRMediaFileManage.h"
 #import "MLSelectPhotoBrowserViewController.h"
 
-@interface PictureScanViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>
+@interface PictureScanViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>{
+    UIBarButtonItem *_rightItem;
+}
 
+@property(nonatomic)BOOL isCollectionSelected;
 @property(nonatomic,strong) UICollectionView *collectionView;
-@property (nonatomic, strong) NSMutableArray *shootCollectionDataArr;
-@property (nonatomic, strong) NSMutableArray *shootCollectionImageArr;
+@property(nonatomic, strong) NSMutableArray *shootCollectionDataArr;
+@property(nonatomic, strong) NSMutableArray *shootCollectionImageArr;
 
 @end
 
@@ -25,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self configureNavgationBar];
     [self initSubview];
     [self initShootCollectionDataArray];
 }
@@ -32,6 +36,14 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = NO;
+}
+
+- (void)configureNavgationBar{
+    _rightItem = [[UIBarButtonItem alloc] initWithTitle:@"选择"
+                                                  style:UIBarButtonItemStylePlain
+                                                 target:self
+                                                 action:@selector(rightBarButtonItemAction)];
+    self.navigationItem.rightBarButtonItem = _rightItem;
 }
 
 - (void)initSubview{
@@ -56,6 +68,17 @@
     return _collectionView;
 }
 
+- (void)rightBarButtonItemAction{
+    _isCollectionSelected = !_isCollectionSelected;
+    
+    if (_isCollectionSelected) {
+        [_rightItem setTitle:@"取消"];
+    }else{
+        [_rightItem setTitle:@"选择"];
+    }
+    [_collectionView reloadData];
+}
+
 - (void)initShootCollectionDataArray{
     NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_pictureSign Type:YES];
     NSError *e = nil;
@@ -73,6 +96,11 @@
                                             UICollectionElementKindSectionHeader withReuseIdentifier:@"ReusableView" forIndexPath:indexPath];
     ShootCollectionHeaderView *collectionHeaderView = [[ShootCollectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 40)];
     collectionHeaderView.typeNameLabel.text = @"左眼";
+    if (_isCollectionSelected) {
+        collectionHeaderView.chooseBtn.hidden = NO;
+    }else{
+        collectionHeaderView.chooseBtn.hidden = YES;
+    }
     [headerView addSubview:collectionHeaderView];//头部广告栏
     return headerView;
 }
