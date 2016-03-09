@@ -10,11 +10,13 @@
 #import "ShootCollectionHeaderView.h"
 #import "ShootCollectionViewCell.h"
 #import "JRMediaFileManage.h"
+#import "MLSelectPhotoBrowserViewController.h"
 
 @interface PictureScanViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property(nonatomic,strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray *shootCollectionDataArr;
+@property (nonatomic, strong) NSMutableArray *shootCollectionImageArr;
 
 @end
 
@@ -60,6 +62,7 @@
     NSArray *fileArr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:filePath error:&e];
     NSLog(@"fileArr:%@",fileArr);
     self.shootCollectionDataArr = [NSMutableArray arrayWithArray:fileArr];
+    self.shootCollectionImageArr = [[NSMutableArray alloc] initWithCapacity:0];
 }
 
 #pragma mark -- UICollectionViewDataSource
@@ -110,12 +113,20 @@
     NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_pictureSign Type:YES];
     NSString *pictureName = [_shootCollectionDataArr objectAtIndex:indexPath.row];
     NSString *picturePath = [NSString stringWithFormat:@"%@/%@",filePath,pictureName];
-    cell.imgView.image = [UIImage imageWithContentsOfFile:picturePath];
+    UIImage *picture = [UIImage imageWithContentsOfFile:picturePath];
+    [_shootCollectionImageArr addObject:picture];
+    cell.imgView.image = picture;
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"section:%ld,row:%ld",(long)indexPath.section,(long)indexPath.row);
+    MLSelectPhotoBrowserViewController *browserVc = [[MLSelectPhotoBrowserViewController alloc] init];
+    [browserVc setValue:@(YES) forKeyPath:@"isTrashing"];
+    browserVc.currentPage = indexPath.row;
+    browserVc.photos = _shootCollectionImageArr;
+    browserVc.deleteCallBack = ^(NSArray *assets){
+    };
+    [self.navigationController pushViewController:browserVc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
