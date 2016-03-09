@@ -11,7 +11,6 @@
 #ifndef ZLAssetsPickerDemo_ZLPicker_h
 #define ZLAssetsPickerDemo_ZLPicker_h
 
-#import "MLSelectPhotoPickerViewController.h"
 #import "MLSelectPhotoAssets.h"
 
 /**
