@@ -161,13 +161,24 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    MLSelectPhotoBrowserViewController *browserVc = [[MLSelectPhotoBrowserViewController alloc] init];
-    [browserVc setValue:@(YES) forKeyPath:@"isTrashing"];
-    browserVc.currentPage = indexPath.row;
-    browserVc.photos = _shootCollectionImageArr;
-    browserVc.deleteCallBack = ^(NSArray *assets){
-    };
-    [self.navigationController pushViewController:browserVc animated:YES];
+    ShootCollectionViewCell *cell = (ShootCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    JRPictureModel *model = [_shootCollectionDataArr objectAtIndex:indexPath.row];
+    if (_isCollectionSelected) {
+        model.isSelected = !model.isSelected;
+        if (model.isSelected) {
+            cell.selectedView.hidden = NO;
+        }else{
+            cell.selectedView.hidden = YES;
+        }
+    }else{
+        MLSelectPhotoBrowserViewController *browserVc = [[MLSelectPhotoBrowserViewController alloc] init];
+        [browserVc setValue:@(YES) forKeyPath:@"isTrashing"];
+        browserVc.currentPage = indexPath.row;
+        browserVc.photos = _shootCollectionImageArr;
+        browserVc.deleteCallBack = ^(NSArray *assets){
+        };
+        [self.navigationController pushViewController:browserVc animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
