@@ -14,7 +14,6 @@
 #import "MLSelectPhotoPickerBrowserPhotoScrollView.h"
 #import "MLSelectPhotoCommon.h"
 #import "UIImage+MLTint.h"
-#import "ALActionSheetView.h"
 
 // 分页控制器的高度
 static NSInteger ZLPickerColletionViewPadding = 20;
@@ -23,7 +22,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 @interface MLSelectPhotoBrowserViewController () <UIScrollViewDelegate,ZLPhotoPickerPhotoScrollViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
 
 // 控件
-@property (strong,nonatomic)    ALActionSheetView *deleteSheetView;
 @property (strong,nonatomic)    UIButton          *deleleBtn;
 @property (strong,nonatomic)    UIButton          *trashBtn;
 @property (weak,nonatomic)      UIButton          *backBtn;
@@ -61,18 +59,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         _doneAssets = [NSMutableArray array];
     }
     return _doneAssets;
-}
-
-- (ALActionSheetView *)deleteSheetView{
-    if (!_deleteSheetView) {
-        __weak typeof (self) weakSelf = self;
-        _deleteSheetView = [ALActionSheetView showActionSheetWithTitle:@"要删除这张照片吗？" cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除" otherButtonTitles:nil handler:^(ALActionSheetView *actionSheetView, NSInteger buttonIndex) {
-            if (buttonIndex == 0) {
-                [weakSelf trashAsset];
-            }
-        }];
-    }
-    return _deleteSheetView;
 }
 
 - (UICollectionView *)collectionView{
@@ -172,7 +158,23 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (void)trashClick{
-    [self.deleteSheetView show];
+    __weak typeof (self) weakSelf = self;
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    // Create the actions.
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    }];
+    
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+        [weakSelf trashAsset];
+    }];
+    
+    // Add the actions.
+    [alertController addAction:cancelAction];
+    [alertController addAction:sureAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)setPhotos:(NSArray *)photos{

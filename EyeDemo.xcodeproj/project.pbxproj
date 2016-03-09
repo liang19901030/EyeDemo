@@ -33,7 +33,6 @@
 		5D6B83AF1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83AE1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m */; };
 		5D6B83B31C8FEC4B004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83B21C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m */; };
 		5D6B83B61C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */; };
-		5D6B83E11C8FEF0F004EB9B1 /* ALActionSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83E01C8FEF0F004EB9B1 /* ALActionSheetView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,8 +106,6 @@
 		5D6B83B21C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSelectPhotoPickerBrowserPhotoImageView.m; sourceTree = "<group>"; };
 		5D6B83B41C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLSelectPhotoPickerBrowserPhotoView.h; sourceTree = "<group>"; };
 		5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSelectPhotoPickerBrowserPhotoView.m; sourceTree = "<group>"; };
-		5D6B83DF1C8FEF0F004EB9B1 /* ALActionSheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALActionSheetView.h; sourceTree = "<group>"; };
-		5D6B83E01C8FEF0F004EB9B1 /* ALActionSheetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALActionSheetView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,8 +174,6 @@
 				5D6B83A51C8FEB5F004EB9B1 /* MLSelectPhotoBrowserViewController.m */,
 				5D6B83AD1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.h */,
 				5D6B83AE1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m */,
-				5D6B83DF1C8FEF0F004EB9B1 /* ALActionSheetView.h */,
-				5D6B83E01C8FEF0F004EB9B1 /* ALActionSheetView.m */,
 				5D6B83B41C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.h */,
 				5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */,
 				5D6B83B11C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.h */,
@@ -373,7 +368,6 @@
 				5D6B834D1C8E97C6004EB9B1 /* WYTopImgBtn.m in Sources */,
 				5D6B83AF1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m in Sources */,
 				5D6B834F1C8E97C6004EB9B1 /* WYVideoTimeView.m in Sources */,
-				5D6B83E11C8FEF0F004EB9B1 /* ALActionSheetView.m in Sources */,
 				5D6B835B1C8EAB1F004EB9B1 /* ShootCollectionHeaderView.m in Sources */,
 				5D6B83A61C8FEB5F004EB9B1 /* MLSelectPhotoBrowserViewController.m in Sources */,
 				5D6B830D1C8E9709004EB9B1 /* ViewController.m in Sources */,
