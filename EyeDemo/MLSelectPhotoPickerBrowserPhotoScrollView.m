@@ -16,9 +16,6 @@
     MLSelectPhotoPickerBrowserPhotoView *_tapView; // for background taps
     MLSelectPhotoPickerBrowserPhotoImageView *_photoImageView;
 }
-
-@property (assign,nonatomic) BOOL isHiddenShowSheet;
-
 @end
 
 @implementation MLSelectPhotoPickerBrowserPhotoScrollView
@@ -55,43 +52,16 @@
     return self;
 }
 
-- (void)setSheet:(UIActionSheet *)sheet{
-    _sheet = sheet;
-    if (!sheet) {
-        self.isHiddenShowSheet = sheet;
-    }
-}
-
 - (void)longGesture:(UILongPressGestureRecognizer *)gesture{
     if (gesture.state == UIGestureRecognizerStateBegan) {
         
-        if (!self.isHiddenShowSheet) {
-            self.sheet = [[UIActionSheet alloc] initWithTitle:@"提示" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:@"保存到相册" otherButtonTitles:nil, nil];
-        }
-        
-        if (!self.isHiddenShowSheet) {
-            [self.sheet showInView:self];
-        }
-    }
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 0){
-        if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
-            UIImageWriteToSavedPhotosAlbum(_photoImageView.image, nil, nil, nil);
-            if (_photoImageView.image) {
-                [self showMessageWithText:@"保存成功"];
-            }
-        }else{
-            if (_photoImageView.image) {
-                [self showMessageWithText:@"没有用户权限,保存失败"];
-            }
+        if ([self.photoScrollViewDelegate respondsToSelector:@selector(pickerPhotoScrollViewDidLongPress:mlPhotoImageView:)]) {
+            [self.photoScrollViewDelegate pickerPhotoScrollViewDidLongPress:self mlPhotoImageView:_photoImageView];
         }
     }
 }
 
 - (void)dealloc {
-    self.isHiddenShowSheet = NO;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

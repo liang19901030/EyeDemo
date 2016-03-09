@@ -183,13 +183,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.makeView.text = [NSString stringWithFormat:@"%ld",self.photos.count];
 }
 
-- (void)setSheet:(UIActionSheet *)sheet{
-    _sheet = sheet;
-    if (!sheet) {
-        self.isShowShowSheet = NO;
-    }
-}
-
 #pragma mark - Life cycle
 - (void)dealloc{
     self.isShowShowSheet = YES;
@@ -333,9 +326,6 @@ static NSString *_cellIdentifier = @"collectionViewCell";
         [cell.contentView addSubview:scrollBoxView];
         
         MLSelectPhotoPickerBrowserPhotoScrollView *scrollView =  [[MLSelectPhotoPickerBrowserPhotoScrollView alloc] init];
-        if (self.sheet || self.isShowShowSheet == YES) {
-            scrollView.sheet = self.sheet;
-        }
         scrollView.backgroundColor = [UIColor clearColor];
         // 为了监听单击photoView事件
         scrollView.frame = [UIScreen mainScreen].bounds;
@@ -352,6 +342,36 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     self.navigationController.navigationBar.hidden = !self.navigationController.navigationBar.isHidden;
     if (self.isEditing) {
         self.toolBar.hidden = !self.toolBar.isHidden;
+    }
+}
+
+// 长按调用
+- (void) pickerPhotoScrollViewDidLongPress:(MLSelectPhotoPickerBrowserPhotoScrollView *)scrollView mlPhotoImageView:(MLSelectPhotoPickerBrowserPhotoImageView *)photoImageView{
+    if (!_isShowShowSheet) {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        // Create the actions.
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        }];
+        
+        UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"保存到相册" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+            if([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeSavedPhotosAlbum]) {
+                UIImageWriteToSavedPhotosAlbum(photoImageView.image, nil, nil, nil);
+                if (photoImageView.image) {
+                    [scrollView showMessageWithText:@"保存成功"];
+                }
+            }else{
+                if (photoImageView.image) {
+                    [scrollView showMessageWithText:@"没有用户权限,保存失败"];
+                }
+            }
+        }];
+        
+        // Add the actions.
+        [alertController addAction:cancelAction];
+        [alertController addAction:sureAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 

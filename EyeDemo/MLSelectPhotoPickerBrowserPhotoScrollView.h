@@ -21,14 +21,14 @@ typedef void(^callBackBlock)(id obj);
 @optional
 // 单击调用
 - (void) pickerPhotoScrollViewDidSingleClick:(MLSelectPhotoPickerBrowserPhotoScrollView *)photoScrollView;
+// 长按调用
+- (void) pickerPhotoScrollViewDidLongPress:(MLSelectPhotoPickerBrowserPhotoScrollView *)scrollView mlPhotoImageView:(MLSelectPhotoPickerBrowserPhotoImageView *)photoImageView;
 @end
 
 @interface MLSelectPhotoPickerBrowserPhotoScrollView : UIScrollView <UIScrollViewDelegate, ZLPhotoPickerBrowserPhotoImageViewDelegate,ZLPhotoPickerBrowserPhotoViewDelegate>
 
 @property (nonatomic,strong) MLSelectPhotoAssets *photo;
 @property (nonatomic, weak) id <ZLPhotoPickerPhotoScrollViewDelegate> photoScrollViewDelegate;
-// 长按图片的操作，可以外面传入
-@property (strong,nonatomic) UIActionSheet *sheet;
 // 单击销毁的block
 @property (copy,nonatomic) callBackBlock callback;
 
