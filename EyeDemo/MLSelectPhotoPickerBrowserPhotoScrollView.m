@@ -9,8 +9,6 @@
 //
 
 #import "MLSelectPhotoPickerBrowserPhotoScrollView.h"
-#import "MLSelectPhotoPickerDatas.h"
-#import "MLSelectPhotoCommon.h"
 #import "UIView+MLExtension.h"
 
 // Private methods and properties

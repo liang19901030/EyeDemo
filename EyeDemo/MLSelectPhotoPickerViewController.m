@@ -10,13 +10,10 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "MLSelectPhotoPickerViewController.h"
-#import "MLSelectPhotoNavigationViewController.h"
-#import "MLSelectPhotoPickerGroupViewController.h"
 #import "MLSelectPhotoCommon.h"
 #import "MLSelectPhotoAssets.h"
 
 @interface MLSelectPhotoPickerViewController ()
-@property (nonatomic , weak) MLSelectPhotoPickerGroupViewController *groupVc;
 @end
 
 @implementation MLSelectPhotoPickerViewController
@@ -33,36 +30,23 @@
 }
 
 #pragma mark - init Action
-- (void) createNavigationController{
-    MLSelectPhotoPickerGroupViewController *groupVc = [[MLSelectPhotoPickerGroupViewController alloc] init];
-    MLSelectPhotoNavigationViewController *nav = [[MLSelectPhotoNavigationViewController alloc] initWithRootViewController:groupVc];
-    nav.view.frame = self.view.bounds;
-    [self addChildViewController:nav];
-    [self.view addSubview:nav.view];
-    self.groupVc = groupVc;
-}
-
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        [self createNavigationController];
     }
     return self;
 }
 
 - (void)setSelectPickers:(NSArray *)selectPickers{
     _selectPickers = selectPickers;
-    self.groupVc.selectAsstes = selectPickers;
 }
 
 - (void)setStatus:(PickerViewShowStatus)status{
     _status = status;
-    self.groupVc.status = status;
 }
 
 - (void)setMinCount:(NSInteger)minCount{
     if (minCount <= 0) return;
     _minCount = minCount;
-    self.groupVc.minCount = minCount;
 }
 
 #pragma mark - 展示控制器
@@ -96,12 +80,10 @@
 
 - (void)setTopShowPhotoPicker:(BOOL)topShowPhotoPicker{
     _topShowPhotoPicker = topShowPhotoPicker;
-    self.groupVc.topShowPhotoPicker = topShowPhotoPicker;
 }
 
 - (void)setDelegate:(id<ZLPhotoPickerViewControllerDelegate>)delegate{
     _delegate = delegate;
-    self.groupVc.delegate = delegate;
 }
 
 #pragma mark - 通过传入一个图片对象（MLSelectPhotoAssets/ALAsset）获取一张缩略图

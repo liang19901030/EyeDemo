@@ -12,7 +12,6 @@
 #import <UIKit/UIKit.h>
 #import "MLSelectPhotoPickerBrowserPhotoImageView.h"
 #import "MLSelectPhotoPickerBrowserPhotoView.h"
-#import "MLSelectPhotoPickerBrowserPhoto.h"
 #import "MLSelectPhoto.h"
 
 typedef void(^callBackBlock)(id obj);
