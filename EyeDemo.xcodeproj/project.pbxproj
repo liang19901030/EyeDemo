@@ -33,7 +33,6 @@
 		5D6B83AF1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83AE1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m */; };
 		5D6B83B31C8FEC4B004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83B21C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m */; };
 		5D6B83B61C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */; };
-		5D6B83BC1C8FECD6004EB9B1 /* MLSelectPhotoAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83BB1C8FECD6004EB9B1 /* MLSelectPhotoAssets.m */; };
 		5D6B83E11C8FEF0F004EB9B1 /* ALActionSheetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83E01C8FEF0F004EB9B1 /* ALActionSheetView.m */; };
 /* End PBXBuildFile section */
 
@@ -108,9 +107,6 @@
 		5D6B83B21C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSelectPhotoPickerBrowserPhotoImageView.m; sourceTree = "<group>"; };
 		5D6B83B41C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLSelectPhotoPickerBrowserPhotoView.h; sourceTree = "<group>"; };
 		5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSelectPhotoPickerBrowserPhotoView.m; sourceTree = "<group>"; };
-		5D6B83BA1C8FECD6004EB9B1 /* MLSelectPhotoAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLSelectPhotoAssets.h; sourceTree = "<group>"; };
-		5D6B83BB1C8FECD6004EB9B1 /* MLSelectPhotoAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSelectPhotoAssets.m; sourceTree = "<group>"; };
-		5D6B83BD1C8FECFE004EB9B1 /* MLSelectPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLSelectPhoto.h; sourceTree = "<group>"; };
 		5D6B83DF1C8FEF0F004EB9B1 /* ALActionSheetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALActionSheetView.h; sourceTree = "<group>"; };
 		5D6B83E01C8FEF0F004EB9B1 /* ALActionSheetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALActionSheetView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -187,10 +183,7 @@
 				5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */,
 				5D6B83B11C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.h */,
 				5D6B83B21C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m */,
-				5D6B83BA1C8FECD6004EB9B1 /* MLSelectPhotoAssets.h */,
-				5D6B83BB1C8FECD6004EB9B1 /* MLSelectPhotoAssets.m */,
 				5D6B83B01C8FEBF5004EB9B1 /* MLSelectPhotoCommon.h */,
-				5D6B83BD1C8FECFE004EB9B1 /* MLSelectPhoto.h */,
 				5D6B83A71C8FEB95004EB9B1 /* UIImage+MLTint.h */,
 				5D6B83A81C8FEB95004EB9B1 /* UIImage+MLTint.m */,
 				5D6B83A91C8FEB95004EB9B1 /* UIView+MLExtension.h */,
@@ -377,7 +370,6 @@
 				5D6B83481C8E97C6004EB9B1 /* LX_layoutAttributes.m in Sources */,
 				5D6B83AC1C8FEB95004EB9B1 /* UIView+MLExtension.m in Sources */,
 				5D6B83491C8E97C6004EB9B1 /* NSTimer+Addtion.m in Sources */,
-				5D6B83BC1C8FECD6004EB9B1 /* MLSelectPhotoAssets.m in Sources */,
 				5D6B834D1C8E97C6004EB9B1 /* WYTopImgBtn.m in Sources */,
 				5D6B83AF1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m in Sources */,
 				5D6B834F1C8E97C6004EB9B1 /* WYVideoTimeView.m in Sources */,

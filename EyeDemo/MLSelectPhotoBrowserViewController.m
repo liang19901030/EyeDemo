@@ -314,7 +314,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     if (self.photos.count) {
         cell.backgroundColor = [UIColor clearColor];
-        MLSelectPhotoAssets *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
+        UIImage *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
         
         if([[cell.contentView.subviews lastObject] isKindOfClass:[UIView class]]){
             [[cell.contentView.subviews lastObject] removeFromSuperview];

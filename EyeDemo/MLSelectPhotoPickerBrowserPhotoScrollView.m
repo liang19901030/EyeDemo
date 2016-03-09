@@ -65,17 +65,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)setPhoto:(MLSelectPhotoAssets *)photo{
+- (void)setPhoto:(UIImage *)photo{
     _photo = photo;
     
     if ([photo isKindOfClass:[UIImage class]]) {
         _photoImageView.image = (UIImage *)photo;
         [self displayImage];
-    }else if (photo.originImage){
-        _photoImageView.image = photo.originImage;
-        [self displayImage];
     }
-    
 }
 
 #pragma mark - Image

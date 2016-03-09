@@ -12,7 +12,6 @@
 #import <UIKit/UIKit.h>
 #import "MLSelectPhotoPickerBrowserPhotoImageView.h"
 #import "MLSelectPhotoPickerBrowserPhotoView.h"
-#import "MLSelectPhoto.h"
 
 typedef void(^callBackBlock)(id obj);
 @class MLSelectPhotoPickerBrowserPhotoScrollView;
@@ -27,7 +26,7 @@ typedef void(^callBackBlock)(id obj);
 
 @interface MLSelectPhotoPickerBrowserPhotoScrollView : UIScrollView <UIScrollViewDelegate, ZLPhotoPickerBrowserPhotoImageViewDelegate,ZLPhotoPickerBrowserPhotoViewDelegate>
 
-@property (nonatomic,strong) MLSelectPhotoAssets *photo;
+@property (nonatomic,strong) UIImage *photo;
 @property (nonatomic, weak) id <ZLPhotoPickerPhotoScrollViewDelegate> photoScrollViewDelegate;
 // 单击销毁的block
 @property (copy,nonatomic) callBackBlock callback;
