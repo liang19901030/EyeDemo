@@ -34,6 +34,8 @@
 		5D6B83B31C8FEC4B004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83B21C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m */; };
 		5D6B83B61C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */; };
 		5D6B83EA1C9018F3004EB9B1 /* ShootCollectionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83E91C9018F3004EB9B1 /* ShootCollectionButton.m */; };
+		5D6B83ED1C901E09004EB9B1 /* JRPictureModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83EC1C901E09004EB9B1 /* JRPictureModel.m */; };
+		5D6B83F01C901EC2004EB9B1 /* ZQBaseClassesExtended.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83EF1C901EC2004EB9B1 /* ZQBaseClassesExtended.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +111,10 @@
 		5D6B83B51C8FEC86004EB9B1 /* MLSelectPhotoPickerBrowserPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLSelectPhotoPickerBrowserPhotoView.m; sourceTree = "<group>"; };
 		5D6B83E81C9018F3004EB9B1 /* ShootCollectionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShootCollectionButton.h; sourceTree = "<group>"; };
 		5D6B83E91C9018F3004EB9B1 /* ShootCollectionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShootCollectionButton.m; sourceTree = "<group>"; };
+		5D6B83EB1C901E09004EB9B1 /* JRPictureModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JRPictureModel.h; sourceTree = "<group>"; };
+		5D6B83EC1C901E09004EB9B1 /* JRPictureModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JRPictureModel.m; sourceTree = "<group>"; };
+		5D6B83EE1C901EC2004EB9B1 /* ZQBaseClassesExtended.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZQBaseClassesExtended.h; sourceTree = "<group>"; };
+		5D6B83EF1C901EC2004EB9B1 /* ZQBaseClassesExtended.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZQBaseClassesExtended.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +171,8 @@
 				5D6B830C1C8E9709004EB9B1 /* ViewController.m */,
 				5D6B83441C8E97C6004EB9B1 /* WYVideoCaptureController.h */,
 				5D6B83451C8E97C6004EB9B1 /* WYVideoCaptureController.m */,
+				5D6B83EB1C901E09004EB9B1 /* JRPictureModel.h */,
+				5D6B83EC1C901E09004EB9B1 /* JRPictureModel.m */,
 				5D6B83531C8EA97A004EB9B1 /* PictureScanViewController.h */,
 				5D6B83541C8EA97A004EB9B1 /* PictureScanViewController.m */,
 				5D6B83591C8EAB1F004EB9B1 /* ShootCollectionHeaderView.h */,
@@ -184,6 +192,8 @@
 				5D6B83B11C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.h */,
 				5D6B83B21C8FEC4A004EB9B1 /* MLSelectPhotoPickerBrowserPhotoImageView.m */,
 				5D6B83B01C8FEBF5004EB9B1 /* MLSelectPhotoCommon.h */,
+				5D6B83EE1C901EC2004EB9B1 /* ZQBaseClassesExtended.h */,
+				5D6B83EF1C901EC2004EB9B1 /* ZQBaseClassesExtended.m */,
 				5D6B83A71C8FEB95004EB9B1 /* UIImage+MLTint.h */,
 				5D6B83A81C8FEB95004EB9B1 /* UIImage+MLTint.m */,
 				5D6B83A91C8FEB95004EB9B1 /* UIView+MLExtension.h */,
@@ -374,6 +384,7 @@
 				5D6B834D1C8E97C6004EB9B1 /* WYTopImgBtn.m in Sources */,
 				5D6B83AF1C8FEBBF004EB9B1 /* MLSelectPhotoPickerBrowserPhotoScrollView.m in Sources */,
 				5D6B834F1C8E97C6004EB9B1 /* WYVideoTimeView.m in Sources */,
+				5D6B83F01C901EC2004EB9B1 /* ZQBaseClassesExtended.m in Sources */,
 				5D6B835B1C8EAB1F004EB9B1 /* ShootCollectionHeaderView.m in Sources */,
 				5D6B83A61C8FEB5F004EB9B1 /* MLSelectPhotoBrowserViewController.m in Sources */,
 				5D6B830D1C8E9709004EB9B1 /* ViewController.m in Sources */,
@@ -383,6 +394,7 @@
 				5D6B830A1C8E9709004EB9B1 /* AppDelegate.m in Sources */,
 				5D6B83071C8E9709004EB9B1 /* main.m in Sources */,
 				5D6B834B1C8E97C6004EB9B1 /* UIView+AutoLayoutViews.m in Sources */,
+				5D6B83ED1C901E09004EB9B1 /* JRPictureModel.m in Sources */,
 				5D6B834C1C8E97C6004EB9B1 /* UIView+Extension.m in Sources */,
 				5D6B834E1C8E97C6004EB9B1 /* WYVideoCaptureController.m in Sources */,
 				5D6B83581C8EA9F8004EB9B1 /* ShootCollectionViewCell.m in Sources */,

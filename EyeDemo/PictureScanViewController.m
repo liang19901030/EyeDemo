@@ -10,6 +10,8 @@
 #import "ShootCollectionHeaderView.h"
 #import "ShootCollectionViewCell.h"
 #import "JRMediaFileManage.h"
+#import "JRPictureModel.h"
+#import "ZQBaseClassesExtended.h"
 #import "MLSelectPhotoBrowserViewController.h"
 
 @interface PictureScanViewController ()<UICollectionViewDataSource,UICollectionViewDelegate>{
@@ -80,12 +82,21 @@
 }
 
 - (void)initShootCollectionDataArray{
+    self.shootCollectionDataArr = [[NSMutableArray alloc] initWithCapacity:0];
+    self.shootCollectionImageArr = [[NSMutableArray alloc] initWithCapacity:0];
+    
     NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_pictureSign Type:YES];
     NSError *e = nil;
     NSArray *fileArr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:filePath error:&e];
     NSLog(@"fileArr:%@",fileArr);
-    self.shootCollectionDataArr = [NSMutableArray arrayWithArray:fileArr];
-    self.shootCollectionImageArr = [[NSMutableArray alloc] initWithCapacity:0];
+    if ([fileArr isValid]) {
+        for (NSString *fileName in fileArr) {
+            JRPictureModel *picture = [[JRPictureModel alloc] init];
+            picture.pictureName = fileName;
+            picture.isSelected = NO;
+            [_shootCollectionDataArr addObject:picture];
+        }
+    }
 }
 
 #pragma mark -- UICollectionViewDataSource
@@ -138,8 +149,10 @@
     if (!cell) {
         NSLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
     }
+    JRPictureModel *pictureModel = [_shootCollectionDataArr objectAtIndex:indexPath.row];
+    
     NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_pictureSign Type:YES];
-    NSString *pictureName = [_shootCollectionDataArr objectAtIndex:indexPath.row];
+    NSString *pictureName = pictureModel.pictureName;
     NSString *picturePath = [NSString stringWithFormat:@"%@/%@",filePath,pictureName];
     UIImage *picture = [UIImage imageWithContentsOfFile:picturePath];
     [_shootCollectionImageArr addObject:picture];
