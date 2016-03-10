@@ -82,7 +82,12 @@
             for (JRPictureModel *model in _selectedPictureModelArr) {
                 model.isSelected = NO;
             }
+        }else{
+            return;
         }
+    }
+    if ([_shootCollectionImageArr isValid]) {
+        [_shootCollectionImageArr removeAllObjects];
     }
     [_collectionView reloadData];
 }
