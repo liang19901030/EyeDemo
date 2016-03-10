@@ -22,6 +22,7 @@
 @property(nonatomic,strong) UICollectionView *collectionView;
 @property(nonatomic, strong) NSMutableArray *shootCollectionDataArr;
 @property(nonatomic, strong) NSMutableArray *shootCollectionImageArr;
+@property(nonatomic, strong) NSMutableArray *selectedPictureModelArr;
 
 @end
 
@@ -77,6 +78,11 @@
         [_rightItem setTitle:@"取消"];
     }else{
         [_rightItem setTitle:@"选择"];
+        if ([_selectedPictureModelArr isValid]) {
+            for (JRPictureModel *model in _selectedPictureModelArr) {
+                model.isSelected = NO;
+            }
+        }
     }
     [_collectionView reloadData];
 }
@@ -84,6 +90,7 @@
 - (void)initShootCollectionDataArray{
     self.shootCollectionDataArr = [[NSMutableArray alloc] initWithCapacity:0];
     self.shootCollectionImageArr = [[NSMutableArray alloc] initWithCapacity:0];
+    self.selectedPictureModelArr = [[NSMutableArray alloc] initWithCapacity:0];
     
     NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_pictureSign Type:YES];
     NSError *e = nil;
@@ -107,11 +114,6 @@
                                             UICollectionElementKindSectionHeader withReuseIdentifier:@"ReusableView" forIndexPath:indexPath];
     ShootCollectionHeaderView *collectionHeaderView = [[ShootCollectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 40)];
     collectionHeaderView.typeNameLabel.text = @"左眼";
-    if (_isCollectionSelected) {
-        collectionHeaderView.chooseBtn.hidden = NO;
-    }else{
-        collectionHeaderView.chooseBtn.hidden = YES;
-    }
     [headerView addSubview:collectionHeaderView];//头部广告栏
     return headerView;
 }
@@ -157,6 +159,11 @@
     UIImage *picture = [UIImage imageWithContentsOfFile:picturePath];
     [_shootCollectionImageArr addObject:picture];
     cell.imgView.image = picture;
+    if (pictureModel.isSelected) {
+        cell.selectedView.hidden = NO;
+    }else{
+        cell.selectedView.hidden = YES;
+    }
     return cell;
 }
 
@@ -167,6 +174,7 @@
         model.isSelected = !model.isSelected;
         if (model.isSelected) {
             cell.selectedView.hidden = NO;
+            [_selectedPictureModelArr addObject:model];
         }else{
             cell.selectedView.hidden = YES;
         }
