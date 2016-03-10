@@ -185,7 +185,7 @@
         }
     }else{
         MLSelectPhotoBrowserViewController *browserVc = [[MLSelectPhotoBrowserViewController alloc] init];
-        [browserVc setValue:@(YES) forKeyPath:@"isTrashing"];
+        [browserVc setValue:@(NO) forKeyPath:@"isTrashing"];
         browserVc.currentPage = indexPath.row;
         browserVc.photos = _shootCollectionImageArr;
         browserVc.deleteCallBack = ^(NSArray *assets){
