@@ -239,31 +239,31 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _progressView = [[ProgressView alloc] initWithFrame:CGRectMake(0, APP_WIDTH + 44, APP_WIDTH, 5)];
     _progressView.totalTime = kVideoTotalTime;
     
-    _dotLabel = [UILabel new];  // 5 - 5
+    _dotLabel = [[UILabel alloc] init];  // 5 - 5
     _dotLabel.layer.cornerRadius = 2.5;
     _dotLabel.clipsToBounds = YES;
     _dotLabel.backgroundColor = RGB(0xffc437);
     
-    _leftBtn = [UIButton new];
+    _leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_leftBtn setTitle:@"左眼" forState:UIControlStateNormal];
     [_leftBtn setTitleColor:RGB(0xfefeff) forState:UIControlStateNormal];
     _leftBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
     [_leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    _centerBtn = [UIButton new];
+    _centerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_centerBtn setTitleColor:RGB(0xffc437) forState:UIControlStateNormal];
     [_centerBtn setTitle:@"左眼" forState:UIControlStateNormal];
     _centerBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
-    _rightBtn = [UIButton new];
+    _rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_rightBtn setTitle:@"右眼" forState:UIControlStateNormal];
     [_rightBtn setTitleColor:RGB(0xfefeff) forState:UIControlStateNormal];
     _rightBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
     [_rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    _cameraBtn = [UIButton new];
+    _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_cameraBtn setImage:[UIImage imageNamed:@"button_camera_screen"] forState:UIControlStateNormal];
     [_cameraBtn addTarget:self action:@selector(cameraBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    _scanBtn = [[UIButton alloc] init];
+    _scanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_scanBtn setTitle:@"浏览照片" forState:UIControlStateNormal];
     [_scanBtn addTarget:self action:@selector(scanBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 }
