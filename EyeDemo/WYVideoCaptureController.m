@@ -323,13 +323,17 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 
 - (void)saveTakenPictureData:(NSData *)imgData{
+    UIImage *image = [UIImage imageWithData:imgData];
+    UIImage *saveImg = [UIImage imageWithCGImage:[self handleImage:image]];
+    NSData *saveImgData = UIImageJPEGRepresentation(saveImg, 1.0f);
+    
     JRMediaFileManage *fileManage = [JRMediaFileManage shareInstance];
     NSString *filePath = [fileManage getJRMediaPathWithSign:_pictureSign Type:_isLeftEye];
     NSString *imageName = [NSString stringWithFormat:@"%02d.png",_takenPictureCount];
     NSString *imgPath = [NSString stringWithFormat:@"%@/%@",filePath,imageName];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL result = [fileManager createFileAtPath:imgPath
-                                       contents:imgData
+                                       contents:saveImgData
                                      attributes:nil];
     NSLog(@"result:%d",result);
 }
@@ -359,6 +363,14 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [_centerBtn setTitle:centerTitle forState:UIControlStateNormal];
     _leftBtn.hidden = isLeft;
     _rightBtn.hidden = !isLeft;
+}
+
+- (CGImageRef)handleImage:(UIImage *)image {
+    UIGraphicsBeginImageContextWithOptions(self.view.size, NO, 1.0);
+    [image drawInRect:CGRectMake(0, 0, self.view.width, self.view.height)];
+    CGImageRef imageRef = UIGraphicsGetImageFromCurrentImageContext().CGImage;
+    CGImageRef subRef = CGImageCreateWithImageInRect(imageRef, CGRectOffset(_viewContainer.frame, 0, 88));
+    return subRef;
 }
 
 @end
