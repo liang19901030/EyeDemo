@@ -227,6 +227,14 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [_closeBtn addTarget:self action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
     
     _viewContainer = [[UIView alloc] init];
+    //添加滑动手势
+    UISwipeGestureRecognizer *leftSwipGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    leftSwipGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+    [_viewContainer addGestureRecognizer:leftSwipGestureRecognizer];
+    
+    UISwipeGestureRecognizer *rightSwipGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
+    rightSwipGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+    [_viewContainer addGestureRecognizer:rightSwipGestureRecognizer];
     
     _progressView = [[ProgressView alloc] initWithFrame:CGRectMake(0, APP_WIDTH + 44, APP_WIDTH, 5)];
     _progressView.totalTime = kVideoTotalTime;
@@ -268,6 +276,18 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 - (void)closeBtnClick {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)handleSwipes:(UISwipeGestureRecognizer *)sender{
+    if (sender.direction == UISwipeGestureRecognizerDirectionLeft){
+        if (_isLeftEye) {
+            [self rightBtnClick:nil];
+        }
+    }else if(sender.direction == UISwipeGestureRecognizerDirectionRight){
+        if (!_isLeftEye) {
+            [self leftBtnClick:nil];
+        }
+    }
 }
 
 - (void)leftBtnClick:(UIButton *)btn {
