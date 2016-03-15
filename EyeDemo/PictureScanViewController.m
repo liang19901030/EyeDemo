@@ -22,9 +22,7 @@
 @property(nonatomic)BOOL isCollectionSelected;
 @property(nonatomic,strong) UICollectionView *collectionView;
 @property(nonatomic, strong) NSMutableArray *sectionArr;
-@property(nonatomic, strong) NSMutableArray *leftEyeDataArr;
 @property(nonatomic, strong) NSMutableArray *leftEyeImageArr;
-@property(nonatomic, strong) NSMutableArray *rightEyeDataArr;
 @property(nonatomic, strong) NSMutableArray *rightEyeImageArr;
 @property(nonatomic, strong) NSMutableArray *selectedPictureModelArr;
 
@@ -98,9 +96,9 @@
 
 - (void)initShootCollectionDataArray{
     self.sectionArr = [[NSMutableArray alloc] initWithCapacity:0];
-    self.leftEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
+    NSMutableArray *leftEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
     self.leftEyeImageArr = [[NSMutableArray alloc] initWithCapacity:0];
-    self.rightEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
+    NSMutableArray *rightEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
     self.rightEyeImageArr = [[NSMutableArray alloc] initWithCapacity:0];
     self.selectedPictureModelArr = [[NSMutableArray alloc] initWithCapacity:0];
     
@@ -113,14 +111,14 @@
             JRPictureModel *picture = [[JRPictureModel alloc] init];
             picture.pictureName = fileName;
             picture.isSelected = NO;
-            [_leftEyeDataArr addObject:picture];
+            [leftEyeDataArr addObject:picture];
         }
         
         JREyeTypeModel *typeModel = [[JREyeTypeModel alloc] init];
         typeModel.isLeftEye = YES;
         typeModel.typeName = @"左眼";
         typeModel.pictureSign = _leftSign;
-        typeModel.pictureArr = _leftEyeDataArr;
+        typeModel.pictureArr = leftEyeDataArr;
         [_sectionArr addObject:typeModel];
     }
     
@@ -133,14 +131,14 @@
             JRPictureModel *picture = [[JRPictureModel alloc] init];
             picture.pictureName = fileName;
             picture.isSelected = NO;
-            [_rightEyeDataArr addObject:picture];
+            [rightEyeDataArr addObject:picture];
         }
         
         JREyeTypeModel *typeModel = [[JREyeTypeModel alloc] init];
         typeModel.isLeftEye = NO;
         typeModel.typeName = @"右眼";
         typeModel.pictureSign = _rightSign;
-        typeModel.pictureArr = _rightEyeDataArr;
+        typeModel.pictureArr = rightEyeDataArr;
         [_sectionArr addObject:typeModel];
     }
 }
@@ -212,15 +210,15 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ShootCollectionViewCell *cell = (ShootCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    JRPictureModel *model = [_leftEyeDataArr objectAtIndex:indexPath.row];
+    //JRPictureModel *model = [_leftEyeDataArr objectAtIndex:indexPath.row];
     if (_isCollectionSelected) {
-        model.isSelected = !model.isSelected;
-        if (model.isSelected) {
-            cell.selectedView.hidden = NO;
-            [_selectedPictureModelArr addObject:model];
-        }else{
-            cell.selectedView.hidden = YES;
-        }
+//        model.isSelected = !model.isSelected;
+//        if (model.isSelected) {
+//            cell.selectedView.hidden = NO;
+//            [_selectedPictureModelArr addObject:model];
+//        }else{
+//            cell.selectedView.hidden = YES;
+//        }
     }else{
         MLSelectPhotoBrowserViewController *browserVc = [[MLSelectPhotoBrowserViewController alloc] init];
         [browserVc setValue:@(NO) forKeyPath:@"isTrashing"];
