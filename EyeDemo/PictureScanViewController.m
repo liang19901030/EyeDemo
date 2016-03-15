@@ -152,6 +152,9 @@
     ShootCollectionHeaderView *collectionHeaderView = [[ShootCollectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 40)];
     JREyeTypeModel *model = [_sectionArr objectAtIndex:indexPath.section];
     collectionHeaderView.typeNameLabel.text = model.typeName;
+    for (id view in headerView.subviews) {
+        [view removeFromSuperview];
+    }
     [headerView addSubview:collectionHeaderView];//头部广告栏
     return headerView;
 }
