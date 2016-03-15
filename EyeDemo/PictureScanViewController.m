@@ -210,15 +210,16 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ShootCollectionViewCell *cell = (ShootCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    //JRPictureModel *model = [_leftEyeDataArr objectAtIndex:indexPath.row];
+    JREyeTypeModel *typeModel = [_sectionArr objectAtIndex:indexPath.section];
+    JRPictureModel *pictureModel = [typeModel.pictureArr objectAtIndex:indexPath.row];
     if (_isCollectionSelected) {
-//        model.isSelected = !model.isSelected;
-//        if (model.isSelected) {
-//            cell.selectedView.hidden = NO;
-//            [_selectedPictureModelArr addObject:model];
-//        }else{
-//            cell.selectedView.hidden = YES;
-//        }
+        pictureModel.isSelected = !pictureModel.isSelected;
+        if (pictureModel.isSelected) {
+            cell.selectedView.hidden = NO;
+            [_selectedPictureModelArr addObject:pictureModel];
+        }else{
+            cell.selectedView.hidden = YES;
+        }
     }else{
         MLSelectPhotoBrowserViewController *browserVc = [[MLSelectPhotoBrowserViewController alloc] init];
         [browserVc setValue:@(NO) forKeyPath:@"isTrashing"];
