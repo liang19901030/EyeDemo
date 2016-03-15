@@ -20,8 +20,11 @@
 
 @property(nonatomic)BOOL isCollectionSelected;
 @property(nonatomic,strong) UICollectionView *collectionView;
-@property(nonatomic, strong) NSMutableArray *shootCollectionDataArr;
-@property(nonatomic, strong) NSMutableArray *shootCollectionImageArr;
+@property(nonatomic, strong) NSMutableArray *sectionArr;
+@property(nonatomic, strong) NSMutableArray *leftEyeDataArr;
+@property(nonatomic, strong) NSMutableArray *leftEyeImageArr;
+@property(nonatomic, strong) NSMutableArray *rightEyeDataArr;
+@property(nonatomic, strong) NSMutableArray *rightEyeImageArr;
 @property(nonatomic, strong) NSMutableArray *selectedPictureModelArr;
 
 @end
@@ -86,28 +89,46 @@
             return;
         }
     }
-    if ([_shootCollectionImageArr isValid]) {
-        [_shootCollectionImageArr removeAllObjects];
+    if ([_leftEyeImageArr isValid]) {
+        [_leftEyeImageArr removeAllObjects];
     }
     [_collectionView reloadData];
 }
 
 - (void)initShootCollectionDataArray{
-    self.shootCollectionDataArr = [[NSMutableArray alloc] initWithCapacity:0];
-    self.shootCollectionImageArr = [[NSMutableArray alloc] initWithCapacity:0];
+    self.sectionArr = [[NSMutableArray alloc] initWithCapacity:0];
+    self.leftEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
+    self.leftEyeImageArr = [[NSMutableArray alloc] initWithCapacity:0];
+    self.rightEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
+    self.rightEyeImageArr = [[NSMutableArray alloc] initWithCapacity:0];
     self.selectedPictureModelArr = [[NSMutableArray alloc] initWithCapacity:0];
     
-    NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_pictureSign Type:YES];
-    NSError *e = nil;
-    NSArray *fileArr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:filePath error:&e];
-    NSLog(@"fileArr:%@",fileArr);
-    if ([fileArr isValid]) {
-        for (NSString *fileName in fileArr) {
+    NSString *leftFilePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_leftSign Type:YES];
+    NSError *le = nil;
+    NSArray *leftFileArr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:leftFilePath error:&le];
+    NSLog(@"leftFileArr:%@",leftFileArr);
+    if ([leftFileArr isValid]) {
+        for (NSString *fileName in leftFileArr) {
             JRPictureModel *picture = [[JRPictureModel alloc] init];
             picture.pictureName = fileName;
             picture.isSelected = NO;
-            [_shootCollectionDataArr addObject:picture];
+            [_leftEyeDataArr addObject:picture];
         }
+        [_sectionArr addObject:@"左眼"];
+    }
+    
+    NSString *rightFilePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_rightSign Type:NO];
+    NSError *re = nil;
+    NSArray *rightFileArr = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:rightFilePath error:&re];
+    NSLog(@"rightFileArr:%@",rightFileArr);
+    if ([rightFileArr isValid]) {
+        for (NSString *fileName in rightFileArr) {
+            JRPictureModel *picture = [[JRPictureModel alloc] init];
+            picture.pictureName = fileName;
+            picture.isSelected = NO;
+            [_rightEyeDataArr addObject:picture];
+        }
+        [_sectionArr addObject:@"右眼"];
     }
 }
 
@@ -118,7 +139,7 @@
     UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:
                                             UICollectionElementKindSectionHeader withReuseIdentifier:@"ReusableView" forIndexPath:indexPath];
     ShootCollectionHeaderView *collectionHeaderView = [[ShootCollectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 40)];
-    collectionHeaderView.typeNameLabel.text = @"左眼";
+    collectionHeaderView.typeNameLabel.text = [_sectionArr objectAtIndex:indexPath.section];
     [headerView addSubview:collectionHeaderView];//头部广告栏
     return headerView;
 }
@@ -140,12 +161,16 @@
 //定义展示的Section的个数
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 1;
+    return _sectionArr.count;
 }
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return _shootCollectionDataArr.count;
+    if (section == 0) {
+        return _leftEyeDataArr.count;
+    }else{
+        return _rightEyeDataArr.count;
+    }
 }
 //每个UICollectionView展示的内容
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -156,13 +181,20 @@
     if (!cell) {
         NSLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
     }
-    JRPictureModel *pictureModel = [_shootCollectionDataArr objectAtIndex:indexPath.row];
+    JRPictureModel *pictureModel;
+    NSString *filePath;
     
-    NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_pictureSign Type:YES];
+    if (indexPath.section == 0) {
+        pictureModel = [_leftEyeDataArr objectAtIndex:indexPath.row];
+        filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_leftSign Type:YES];
+    }else{
+        pictureModel = [_rightEyeDataArr objectAtIndex:indexPath.row];
+        filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_rightSign Type:NO];
+    }
     NSString *pictureName = pictureModel.pictureName;
     NSString *picturePath = [NSString stringWithFormat:@"%@/%@",filePath,pictureName];
     UIImage *picture = [UIImage imageWithContentsOfFile:picturePath];
-    [_shootCollectionImageArr addObject:picture];
+    [_leftEyeImageArr addObject:picture];
     cell.imgView.image = picture;
     if (pictureModel.isSelected) {
         cell.selectedView.hidden = NO;
@@ -174,7 +206,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     ShootCollectionViewCell *cell = (ShootCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    JRPictureModel *model = [_shootCollectionDataArr objectAtIndex:indexPath.row];
+    JRPictureModel *model = [_leftEyeDataArr objectAtIndex:indexPath.row];
     if (_isCollectionSelected) {
         model.isSelected = !model.isSelected;
         if (model.isSelected) {
@@ -187,7 +219,7 @@
         MLSelectPhotoBrowserViewController *browserVc = [[MLSelectPhotoBrowserViewController alloc] init];
         [browserVc setValue:@(NO) forKeyPath:@"isTrashing"];
         browserVc.currentPage = indexPath.row;
-        browserVc.photos = _shootCollectionImageArr;
+        browserVc.photos = _leftEyeImageArr;
         browserVc.deleteCallBack = ^(NSArray *assets){
         };
         [self.navigationController pushViewController:browserVc animated:YES];

@@ -98,6 +98,8 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     JRMediaFileManage *fileManage = [JRMediaFileManage shareInstance];
     _pictureLeftSign = [fileManage getPictureSign];
     _pictureRightSign = [fileManage getPictureSign];
+    NSLog(@"_pictureLeftSign:%@",_pictureLeftSign);
+    NSLog(@"_pictureRightSign:%@",_pictureRightSign);
 }
 
 - (void)setupCaptureView {
@@ -279,6 +281,8 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 #pragma mark - ButtonClick
 - (void)scanBtnClick:(UIButton *)btn{
     PictureScanViewController *scanVc = [[PictureScanViewController alloc] init];
+    scanVc.leftSign = _pictureLeftSign;
+    scanVc.rightSign = _pictureRightSign;
     [self.navigationController pushViewController:scanVc animated:YES];
 }
 - (void)closeBtnClick {
