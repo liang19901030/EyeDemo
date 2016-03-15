@@ -22,8 +22,6 @@
 @property(nonatomic)BOOL isCollectionSelected;
 @property(nonatomic,strong) UICollectionView *collectionView;
 @property(nonatomic, strong) NSMutableArray *sectionArr;
-@property(nonatomic, strong) NSMutableArray *leftEyeImageArr;
-@property(nonatomic, strong) NSMutableArray *rightEyeImageArr;
 @property(nonatomic, strong) NSMutableArray *selectedPictureModelArr;
 
 @end
@@ -88,18 +86,13 @@
             return;
         }
     }
-    if ([_leftEyeImageArr isValid]) {
-        [_leftEyeImageArr removeAllObjects];
-    }
     [_collectionView reloadData];
 }
 
 - (void)initShootCollectionDataArray{
     self.sectionArr = [[NSMutableArray alloc] initWithCapacity:0];
     NSMutableArray *leftEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
-    self.leftEyeImageArr = [[NSMutableArray alloc] initWithCapacity:0];
     NSMutableArray *rightEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
-    self.rightEyeImageArr = [[NSMutableArray alloc] initWithCapacity:0];
     self.selectedPictureModelArr = [[NSMutableArray alloc] initWithCapacity:0];
     
     NSString *leftFilePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_leftSign Type:YES];
@@ -196,13 +189,7 @@
     
     JREyeTypeModel *typeModel = [_sectionArr objectAtIndex:indexPath.section];
     JRPictureModel *pictureModel = [typeModel.pictureArr objectAtIndex:indexPath.row];
-    NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:typeModel.pictureSign Type:typeModel.isLeftEye];
-    
-    NSString *pictureName = pictureModel.pictureName;
-    NSString *picturePath = [NSString stringWithFormat:@"%@/%@",filePath,pictureName];
-    UIImage *picture = [UIImage imageWithContentsOfFile:picturePath];
-    [_leftEyeImageArr addObject:picture];
-    cell.imgView.image = picture;
+    cell.imgView.image = [self getImageWithTypeModel:typeModel pictureModel:pictureModel];
     if (pictureModel.isSelected) {
         cell.selectedView.hidden = NO;
     }else{
@@ -224,14 +211,34 @@
             cell.selectedView.hidden = YES;
         }
     }else{
+        NSArray *imageArr = [self getImagesArrayWithTypeModel:typeModel pictureModelArray:typeModel.pictureArr];
         MLSelectPhotoBrowserViewController *browserVc = [[MLSelectPhotoBrowserViewController alloc] init];
         [browserVc setValue:@(NO) forKeyPath:@"isTrashing"];
         browserVc.currentPage = indexPath.row;
-        browserVc.photos = _leftEyeImageArr;
+        browserVc.photos = imageArr;
         browserVc.deleteCallBack = ^(NSArray *assets){
         };
         [self.navigationController pushViewController:browserVc animated:YES];
     }
+}
+
+- (NSArray *)getImagesArrayWithTypeModel:(JREyeTypeModel *)typeModel pictureModelArray:(NSArray *)pictureModelArr{
+    NSMutableArray *tempArr = [[NSMutableArray alloc] initWithCapacity:0];
+    for (JRPictureModel *pictureModel in pictureModelArr) {
+        UIImage *image = [self getImageWithTypeModel:typeModel pictureModel:pictureModel];
+        [tempArr addObject:image];
+    }
+    NSArray *imageArr = [NSArray arrayWithArray:tempArr];
+    return imageArr;
+}
+
+- (UIImage *)getImageWithTypeModel:(JREyeTypeModel *)typeModel pictureModel:(JRPictureModel *)pictureModel{
+    NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:typeModel.pictureSign Type:typeModel.isLeftEye];
+    
+    NSString *pictureName = pictureModel.pictureName;
+    NSString *picturePath = [NSString stringWithFormat:@"%@/%@",filePath,pictureName];
+    UIImage *picture = [UIImage imageWithContentsOfFile:picturePath];
+    return picture;
 }
 
 - (void)didReceiveMemoryWarning {
