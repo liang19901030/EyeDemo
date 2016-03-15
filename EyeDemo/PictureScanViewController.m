@@ -10,6 +10,7 @@
 #import "ShootCollectionHeaderView.h"
 #import "ShootCollectionViewCell.h"
 #import "JRMediaFileManage.h"
+#import "JREyeTypeModel.h"
 #import "JRPictureModel.h"
 #import "ZQBaseClassesExtended.h"
 #import "MLSelectPhotoBrowserViewController.h"
@@ -114,7 +115,13 @@
             picture.isSelected = NO;
             [_leftEyeDataArr addObject:picture];
         }
-        [_sectionArr addObject:@"左眼"];
+        
+        JREyeTypeModel *typeModel = [[JREyeTypeModel alloc] init];
+        typeModel.isLeftEye = YES;
+        typeModel.typeName = @"左眼";
+        typeModel.pictureSign = _leftSign;
+        typeModel.pictureArr = _leftEyeDataArr;
+        [_sectionArr addObject:typeModel];
     }
     
     NSString *rightFilePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_rightSign Type:NO];
@@ -128,7 +135,13 @@
             picture.isSelected = NO;
             [_rightEyeDataArr addObject:picture];
         }
-        [_sectionArr addObject:@"右眼"];
+        
+        JREyeTypeModel *typeModel = [[JREyeTypeModel alloc] init];
+        typeModel.isLeftEye = NO;
+        typeModel.typeName = @"右眼";
+        typeModel.pictureSign = _rightSign;
+        typeModel.pictureArr = _rightEyeDataArr;
+        [_sectionArr addObject:typeModel];
     }
 }
 
@@ -139,7 +152,8 @@
     UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:
                                             UICollectionElementKindSectionHeader withReuseIdentifier:@"ReusableView" forIndexPath:indexPath];
     ShootCollectionHeaderView *collectionHeaderView = [[ShootCollectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 40)];
-    collectionHeaderView.typeNameLabel.text = [_sectionArr objectAtIndex:indexPath.section];
+    JREyeTypeModel *model = [_sectionArr objectAtIndex:indexPath.section];
+    collectionHeaderView.typeNameLabel.text = model.typeName;
     [headerView addSubview:collectionHeaderView];//头部广告栏
     return headerView;
 }
@@ -166,11 +180,8 @@
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return _leftEyeDataArr.count;
-    }else{
-        return _rightEyeDataArr.count;
-    }
+    JREyeTypeModel *model = [_sectionArr objectAtIndex:section];
+    return model.pictureArr.count;
 }
 //每个UICollectionView展示的内容
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -181,16 +192,11 @@
     if (!cell) {
         NSLog(@"无法创建CollectionViewCell时打印，自定义的cell就不可能进来了。");
     }
-    JRPictureModel *pictureModel;
-    NSString *filePath;
     
-    if (indexPath.section == 0) {
-        pictureModel = [_leftEyeDataArr objectAtIndex:indexPath.row];
-        filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_leftSign Type:YES];
-    }else{
-        pictureModel = [_rightEyeDataArr objectAtIndex:indexPath.row];
-        filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_rightSign Type:NO];
-    }
+    JREyeTypeModel *typeModel = [_sectionArr objectAtIndex:indexPath.section];
+    JRPictureModel *pictureModel = [typeModel.pictureArr objectAtIndex:indexPath.row];
+    NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:typeModel.pictureSign Type:typeModel.isLeftEye];
+    
     NSString *pictureName = pictureModel.pictureName;
     NSString *picturePath = [NSString stringWithFormat:@"%@/%@",filePath,pictureName];
     UIImage *picture = [UIImage imageWithContentsOfFile:picturePath];
