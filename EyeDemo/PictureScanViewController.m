@@ -19,6 +19,7 @@
     UIBarButtonItem *_rightItem;
 }
 
+@property(nonatomic,strong) UIButton *commitBtn;
 @property(nonatomic)BOOL isCollectionSelected;
 @property(nonatomic,strong) UICollectionView *collectionView;
 @property(nonatomic, strong) NSMutableArray *sectionArr;
@@ -52,6 +53,17 @@
 
 - (void)initSubview{
     [self.view addSubview:self.collectionView];
+}
+
+#pragma mark ----commitBtn-----
+- (UIButton *)commitBtn{
+    if (!_commitBtn) {
+        _commitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _commitBtn.frame = CGRectMake(0, CGRectGetHeight(self.view.bounds)-40-30, CGRectGetWidth(self.view.bounds), 30);
+        [_commitBtn setTitle:@"提交" forState:UIControlStateNormal];
+        [_commitBtn addTarget:self action:@selector(commitBtnClick:) forControlEvents:UIControlEventTouchUpOutside];
+    }
+    return _commitBtn;
 }
 
 #pragma mark ----collectionView-----
@@ -207,13 +219,14 @@
     ShootCollectionViewCell *cell = (ShootCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
     JREyeTypeModel *typeModel = [_sectionArr objectAtIndex:indexPath.section];
     JRPictureModel *pictureModel = [typeModel.pictureArr objectAtIndex:indexPath.row];
+    NSString *imgPath = [self getImagePathWithTypeModel:typeModel pictureModel:pictureModel];
     if (_isCollectionSelected) {
         pictureModel.isSelected = !pictureModel.isSelected;
         if (pictureModel.isSelected) {
             if ([typeModel.typeName isEqualToString:@"左眼"]) {
                 if (_leftSelectedPictureModelArr.count<2) {
                     cell.selectedView.hidden = NO;
-                    [_leftSelectedPictureModelArr addObject:pictureModel];
+                    [_leftSelectedPictureModelArr addObject:imgPath];
                 }else{
                     pictureModel.isSelected = !pictureModel.isSelected;
                     [self showBeyondLimitSelectedCount];
@@ -221,7 +234,7 @@
             }else{
                 if (_rightSelectedPictureModelArr.count<2) {
                     cell.selectedView.hidden = NO;
-                    [_rightSelectedPictureModelArr addObject:pictureModel];
+                    [_rightSelectedPictureModelArr addObject:imgPath];
                 }else{
                     pictureModel.isSelected = !pictureModel.isSelected;
                     [self showBeyondLimitSelectedCount];
@@ -230,11 +243,12 @@
         }else{
             cell.selectedView.hidden = YES;
             if ([typeModel.typeName isEqualToString:@"左眼"]) {
-                [_leftSelectedPictureModelArr removeObject:pictureModel];
+                [_leftSelectedPictureModelArr removeObject:imgPath];
             }else{
-                [_rightSelectedPictureModelArr removeObject:pictureModel];
+                [_rightSelectedPictureModelArr removeObject:imgPath];
             }
         }
+        [self calculateSelectedPictureCount];
     }else{
         NSArray *imageArr = [self getImagesArrayWithTypeModel:typeModel pictureModelArray:typeModel.pictureArr];
         MLSelectPhotoBrowserViewController *browserVc = [[MLSelectPhotoBrowserViewController alloc] init];
@@ -244,6 +258,14 @@
         browserVc.deleteCallBack = ^(NSArray *assets){
         };
         [self.navigationController pushViewController:browserVc animated:YES];
+    }
+}
+
+- (void)calculateSelectedPictureCount{
+    if (_leftSelectedPictureModelArr.count>0 || _rightSelectedPictureModelArr.count>0) {
+        [self.collectionView addSubview:self.commitBtn];
+    }else{
+        [self.commitBtn removeFromSuperview];
     }
 }
 
@@ -274,6 +296,18 @@
     NSString *picturePath = [NSString stringWithFormat:@"%@/%@",filePath,pictureName];
     UIImage *picture = [UIImage imageWithContentsOfFile:picturePath];
     return picture;
+}
+
+- (NSString *)getImagePathWithTypeModel:(JREyeTypeModel *)typeModel pictureModel:(JRPictureModel *)pictureModel{
+    NSString *filePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:typeModel.pictureSign Type:typeModel.isLeftEye];
+    
+    NSString *pictureName = pictureModel.pictureName;
+    NSString *picturePath = [NSString stringWithFormat:@"%@/%@",filePath,pictureName];
+    return picturePath;
+}
+
+- (void)commitBtnClick:(id)sender{
+    
 }
 
 - (void)didReceiveMemoryWarning {
