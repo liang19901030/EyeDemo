@@ -308,7 +308,13 @@
 }
 
 - (void)commitBtnClick:(id)sender{
-    
+    NSMutableDictionary *temDic = [[NSMutableDictionary alloc] initWithCapacity:0];
+    if ([_leftSelectedPictureModelArr isValid]) {
+        [temDic setObject:_leftSelectedPictureModelArr forKey:@"leftEye"];
+    }
+    if ([_rightSelectedPictureModelArr isValid]) {
+        [temDic setObject:_rightSelectedPictureModelArr forKey:@"rightEye"];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
