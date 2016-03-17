@@ -79,6 +79,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
+    [self initTakenParameters];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -323,6 +324,10 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 - (void)cameraBtnClick:(UIButton *)btn {
     _takenPictureCount++;
+    if (_takenPictureCount==1) {
+        [[JRMediaFileManage shareInstance] deleteFileWithEyeType:_isLeftEye];
+    }
+    
     __weak WYVideoCaptureController *wself = self;
     // 1.根据设备输出获得链接
     AVCaptureConnection *captureConnection = [_captureStillImageOutput connectionWithMediaType:AVMediaTypeVideo];
