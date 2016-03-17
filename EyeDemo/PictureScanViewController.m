@@ -22,7 +22,8 @@
 @property(nonatomic)BOOL isCollectionSelected;
 @property(nonatomic,strong) UICollectionView *collectionView;
 @property(nonatomic, strong) NSMutableArray *sectionArr;
-@property(nonatomic, strong) NSMutableArray *selectedPictureModelArr;
+@property(nonatomic, strong) NSMutableArray *leftSelectedPictureModelArr;
+@property(nonatomic, strong) NSMutableArray *rightSelectedPictureModelArr;
 
 @end
 
@@ -78,8 +79,11 @@
         [_rightItem setTitle:@"取消"];
     }else{
         [_rightItem setTitle:@"选择"];
-        if ([_selectedPictureModelArr isValid]) {
-            for (JRPictureModel *model in _selectedPictureModelArr) {
+        if ([_leftSelectedPictureModelArr isValid] || [_rightSelectedPictureModelArr isValid]) {
+            for (JRPictureModel *model in _leftSelectedPictureModelArr) {
+                model.isSelected = NO;
+            }
+            for (JRPictureModel *model in _rightSelectedPictureModelArr) {
                 model.isSelected = NO;
             }
         }else{
@@ -93,7 +97,8 @@
     self.sectionArr = [[NSMutableArray alloc] initWithCapacity:0];
     NSMutableArray *leftEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
     NSMutableArray *rightEyeDataArr = [[NSMutableArray alloc] initWithCapacity:0];
-    self.selectedPictureModelArr = [[NSMutableArray alloc] initWithCapacity:0];
+    self.leftSelectedPictureModelArr = [[NSMutableArray alloc] initWithCapacity:0];
+    self.rightSelectedPictureModelArr = [[NSMutableArray alloc] initWithCapacity:0];
     
     NSString *leftFilePath = [[JRMediaFileManage shareInstance] getJRMediaPathWithSign:_leftSign Type:YES];
     NSError *le = nil;
@@ -205,10 +210,30 @@
     if (_isCollectionSelected) {
         pictureModel.isSelected = !pictureModel.isSelected;
         if (pictureModel.isSelected) {
-            cell.selectedView.hidden = NO;
-            [_selectedPictureModelArr addObject:pictureModel];
+            if ([typeModel.typeName isEqualToString:@"左眼"]) {
+                if (_leftSelectedPictureModelArr.count<2) {
+                    cell.selectedView.hidden = NO;
+                    [_leftSelectedPictureModelArr addObject:pictureModel];
+                }else{
+                    pictureModel.isSelected = !pictureModel.isSelected;
+                    [self showBeyondLimitSelectedCount];
+                }
+            }else{
+                if (_rightSelectedPictureModelArr.count<2) {
+                    cell.selectedView.hidden = NO;
+                    [_rightSelectedPictureModelArr addObject:pictureModel];
+                }else{
+                    pictureModel.isSelected = !pictureModel.isSelected;
+                    [self showBeyondLimitSelectedCount];
+                }
+            }
         }else{
             cell.selectedView.hidden = YES;
+            if ([typeModel.typeName isEqualToString:@"左眼"]) {
+                [_leftSelectedPictureModelArr removeObject:pictureModel];
+            }else{
+                [_rightSelectedPictureModelArr removeObject:pictureModel];
+            }
         }
     }else{
         NSArray *imageArr = [self getImagesArrayWithTypeModel:typeModel pictureModelArray:typeModel.pictureArr];
@@ -220,6 +245,16 @@
         };
         [self.navigationController pushViewController:browserVc animated:YES];
     }
+}
+
+- (void)showBeyondLimitSelectedCount{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"单侧眼睛最多选择两张图片" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *sureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+    }];
+    // Add the actions.
+    [alertController addAction:sureAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (NSArray *)getImagesArrayWithTypeModel:(JREyeTypeModel *)typeModel pictureModelArray:(NSArray *)pictureModelArr{
