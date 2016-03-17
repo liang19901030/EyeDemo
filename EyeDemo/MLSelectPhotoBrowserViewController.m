@@ -159,7 +159,7 @@ static NSString *_cellIdentifier = @"collectionViewCell";
 }
 
 - (void)trashClick{
-    __weak typeof (self) weakSelf = self;
+    __weak MLSelectPhotoBrowserViewController *weakSelf = self;
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     

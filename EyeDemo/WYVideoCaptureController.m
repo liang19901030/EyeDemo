@@ -323,7 +323,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 - (void)cameraBtnClick:(UIButton *)btn {
     _takenPictureCount++;
-    __weak typeof(WYVideoCaptureController) *wself = self;
+    __weak WYVideoCaptureController *wself = self;
     // 1.根据设备输出获得链接
     AVCaptureConnection *captureConnection = [_captureStillImageOutput connectionWithMediaType:AVMediaTypeVideo];
     // 2.根据链接取得设备输出的数据
