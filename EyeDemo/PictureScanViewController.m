@@ -59,10 +59,10 @@
 - (UIButton *)commitBtn{
     if (!_commitBtn) {
         _commitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _commitBtn.frame = CGRectMake(0, CGRectGetHeight(self.view.bounds)-64-40-30, CGRectGetWidth(self.view.bounds), 30);
+        _commitBtn.frame = CGRectMake(0, CGRectGetHeight(self.view.bounds)-40-30, CGRectGetWidth(self.view.bounds), 30);
         [_commitBtn setTitle:@"提交" forState:UIControlStateNormal];
         [_commitBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [_commitBtn addTarget:self action:@selector(commitBtnClick:) forControlEvents:UIControlEventTouchUpOutside];
+        [_commitBtn addTarget:self action:@selector(commitBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _commitBtn;
 }
@@ -264,7 +264,7 @@
 
 - (void)calculateSelectedPictureCount{
     if (_leftSelectedPictureModelArr.count>0 || _rightSelectedPictureModelArr.count>0) {
-        [self.collectionView addSubview:self.commitBtn];
+        [self.view addSubview:self.commitBtn];
     }else{
         [self.commitBtn removeFromSuperview];
     }
@@ -315,6 +315,10 @@
     if ([_rightSelectedPictureModelArr isValid]) {
         [temDic setObject:_rightSelectedPictureModelArr forKey:@"rightEye"];
     }
+    NSDictionary *pathDic = [NSDictionary dictionaryWithDictionary:temDic];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TakePhotosFinishedNotification"
+                                                        object:nil
+                                                      userInfo:pathDic];
 }
 
 - (void)didReceiveMemoryWarning {
