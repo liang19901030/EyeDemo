@@ -274,6 +274,10 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self.navigationController pushViewController:scanVc animated:YES];
 }
 - (void)closeBtnClick {
+    NSDictionary *pathDic = [NSDictionary dictionary];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TakePhotosFinishedNotification"
+                                                        object:nil
+                                                      userInfo:pathDic];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
