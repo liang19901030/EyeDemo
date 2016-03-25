@@ -204,7 +204,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     
     [self.view addSubview:_closeBtn];
     [self.view addSubview:_viewContainer];
-    [self.view addSubview:_wbSlider];
     //[self.view addSubview:_progressView];
     [self.view addSubview:self.whiteBalanceView];
     [self.view addSubview:self.toolView];
@@ -220,9 +219,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self.view addSubview:_cameraBtn];
     
     _closeBtn.frame = CGRectMake(0, 10, 60, 30);
-    CGFloat sliderOriginX = (CGRectGetWidth(self.view.bounds)-200)/2.0;
-    CGFloat sliderOriginY = 44+APP_WIDTH-40;
-    _wbSlider.frame = CGRectMake(sliderOriginX, sliderOriginY, 200, 20);
     _viewContainer.frame = CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT-64);
     _progressView.frame = CGRectMake(0, CGRectGetMaxY(_viewContainer.frame), APP_WIDTH, 5);
     _dotLabel.frame = CGRectMake((APP_WIDTH - 5) * 0.5,APP_HEIGHT - ((324.0f-30.0f)/2.0f) , 5, 5);
@@ -245,12 +241,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_closeBtn setImage:[UIImage imageNamed:@"button_camera_close"] forState:UIControlStateNormal];
     [_closeBtn addTarget:self action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    
-    _wbSlider = [[UISlider alloc] init];
-    _wbSlider.minimumValue = 3000.0f;
-    _wbSlider.maximumValue = 12000.0f;
-    _wbSlider.value = 6000.0f;
-    [_wbSlider addTarget:self action:@selector(wbSliderMethod:) forControlEvents:UIControlEventValueChanged];
     
     _viewContainer = [[UIView alloc] init];
     //添加滑动手势
@@ -370,6 +360,16 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         UIImageView *rightImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rightOriginX, rightOriginY, rightWitdth, rightHeight)];
         rightImgView.image = rightImg;
         [_whiteBalanceView addSubview:rightImgView];
+        
+        CGFloat sliderOriginX = leftWitdth + (22.0f+22.0f)/2.0f;
+        CGFloat sliderOriginY = 0.0f;
+        CGFloat sliderWidth = width - sliderOriginX - (rightWitdth + (22.0f+22.0f)/2.0f);
+        _wbSlider = [[UISlider alloc] initWithFrame:CGRectMake(sliderOriginX, sliderOriginY, sliderWidth, height)];
+        _wbSlider.minimumValue = 3000.0f;
+        _wbSlider.maximumValue = 12000.0f;
+        _wbSlider.value = 6000.0f;
+        [_wbSlider addTarget:self action:@selector(wbSliderMethod:) forControlEvents:UIControlEventValueChanged];
+        [_whiteBalanceView addSubview:_wbSlider];
     }
     return _whiteBalanceView;
 }
