@@ -19,7 +19,10 @@
 static NSInteger ZLPickerColletionViewPadding = 20;
 static NSString *_cellIdentifier = @"collectionViewCell";
 
-@interface MLSelectPhotoBrowserViewController () <UIScrollViewDelegate,ZLPhotoPickerPhotoScrollViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>
+@interface MLSelectPhotoBrowserViewController () <UIScrollViewDelegate,ZLPhotoPickerPhotoScrollViewDelegate,UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,UICollectionViewDelegate>{
+    
+    UIBarButtonItem *_leftItem;
+}
 
 // 控件
 @property (strong,nonatomic)    UIButton          *deleleBtn;
@@ -197,6 +200,21 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     self.view.backgroundColor = [UIColor blackColor];
     self.extendedLayoutIncludesOpaqueBars = YES;
+    if (!_isModelData) {
+        [self configureNavgationBar];
+    }
+}
+
+- (void)configureNavgationBar{
+    _leftItem = [[UIBarButtonItem alloc] initWithTitle:@"取消"
+                                                 style:UIBarButtonItemStylePlain
+                                                target:self
+                                                action:@selector(leftBarButtonItemAction)];
+    self.navigationItem.leftBarButtonItem = _leftItem;
+}
+
+- (void)leftBarButtonItemAction{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -初始化底部ToorBar
@@ -317,7 +335,14 @@ static NSString *_cellIdentifier = @"collectionViewCell";
     
     if (self.photos.count) {
         cell.backgroundColor = [UIColor clearColor];
-        UIImage *photo = self.photos[indexPath.item]; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
+        UIImage *photo; //[self.dataSource photoBrowser:self photoAtIndex:indexPath.item];
+        if (_isModelData) {
+            photo = self.photos[indexPath.item];
+        }else{
+            NSDictionary *paramDic = self.photos[indexPath.item];
+            NSString *imgPath = [paramDic objectForKey:@"origin"];
+            photo = [UIImage imageWithContentsOfFile:imgPath];
+        }
         
         if([[cell.contentView.subviews lastObject] isKindOfClass:[UIView class]]){
             [[cell.contentView.subviews lastObject] removeFromSuperview];

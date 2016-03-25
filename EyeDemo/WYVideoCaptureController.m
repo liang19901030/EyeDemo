@@ -32,6 +32,8 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     int _takenPictureCount;
 }
 @property (nonatomic, strong) UIButton *closeBtn;
+@property (nonatomic, strong) UISlider *wbSlider;
+@property (nonatomic, strong) UIButton *flashBtn;
 @property (nonatomic, strong) UIView *viewContainer;
 @property (nonatomic, strong) ProgressView *progressView;
 @property (nonatomic, strong) UILabel *dotLabel;
@@ -39,10 +41,12 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 @property (nonatomic, strong) UIButton *centerBtn;
 @property (nonatomic, strong) UIButton *rightBtn;
 @property (nonatomic, strong) UIButton *cameraBtn;
-@property (nonatomic, strong) UIButton *scanBtn;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UIButton *imageViewBtn;
 
 /// 负责输入和输出设备之间数据传递
 @property (nonatomic, strong) AVCaptureSession *captureSession;
+@property (nonatomic, strong) AVCaptureDevice *captureDevice;
 /// 负责从AVCaptureDevice获取数据
 @property (nonatomic, strong) AVCaptureDeviceInput *captureDeviceInput;
 /// 照片输出流
@@ -52,7 +56,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 /// 是否允许旋转 (注意在旋转过程中禁止屏幕旋转)
 @property (nonatomic, assign, getter=isEnableRotation) BOOL enableRotation;
 /// 旋转前的屏幕大小
-@property (nonatomic, assign) CGRect lastBounds;
+//@property (nonatomic, assign) CGRect lastBounds;
 /// 后台任务标识
 @property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIndentifier;
 
@@ -67,6 +71,13 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self ChangeToLeft:YES];
     [self setupCaptureView];
     self.view.backgroundColor = RGB(0x16161b);
+    
+    if (_isScan) {
+        [self pushToPictureScan:NO];
+    }else{
+        [self cleanOlderData];
+    }
+    
 }
 /// 隐藏状态栏
 - (BOOL)prefersStatusBarHidden {
@@ -92,6 +103,10 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     NSLog(@"我是拍照控制器,我被销毁了");
 }
 
+- (void)cleanOlderData{
+    [[JRMediaFileManage shareInstance] deleteAllFiles];
+}
+
 - (void)setupCaptureView {
     // 1.初始化会话
     _captureSession = [[AVCaptureSession alloc] init];
@@ -99,14 +114,15 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         [_captureSession setSessionPreset:AVCaptureSessionPreset1280x720]; // 设置分辨率
     }
     // 2.获得输入设备
-    AVCaptureDevice *captureDevice = [self getCameraDeviceWithPosition:AVCaptureDevicePositionBack];
-    if (captureDevice == nil) {
+    self.captureDevice = [self getCameraDeviceWithPosition:AVCaptureDevicePositionBack];
+    [self wbSliderMethod:_wbSlider];
+    if (_captureDevice == nil) {
         NSLog(@"获取输入设备失败");
         return;
     }
     // 4.根据输入设备初始化设备输入对象,用于获得输入数据
     NSError *error = nil;
-    _captureDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
+    _captureDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_captureDevice error:&error];
     if (error) {
         NSLog(@"创建设备输入对象失败 -- error = %@", error);
         return;
@@ -129,7 +145,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _captureVideoPreviewLayer.frame = layer.bounds;
     _captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [layer insertSublayer:_captureVideoPreviewLayer atIndex:0];
-    [self addNotificationToCaptureDevice:captureDevice];
+    [self addNotificationToCaptureDevice:_captureDevice];
 }
 
 #pragma mark - CaptureMethod
@@ -196,15 +212,22 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     
     [self.view addSubview:_closeBtn];
     [self.view addSubview:_viewContainer];
-    [self.view addSubview:_progressView];
+    [self.view addSubview:_wbSlider];
+    [self.view addSubview:_flashBtn];
+    [self.view addSubview:_imageView];
+    [self.view addSubview:_imageViewBtn];
+    //[self.view addSubview:_progressView];
     [self.view addSubview:_dotLabel];
     [self.view addSubview:_leftBtn];
     [self.view addSubview:_centerBtn];
     [self.view addSubview:_rightBtn];
     [self.view addSubview:_cameraBtn];
-    [self.view addSubview:_scanBtn];
     
     _closeBtn.frame = CGRectMake(0, 10, 60, 30);
+    CGFloat sliderOriginX = (CGRectGetWidth(self.view.bounds)-200)/2.0;
+    CGFloat sliderOriginY = 44+APP_WIDTH-40;
+    _wbSlider.frame = CGRectMake(sliderOriginX, sliderOriginY, 200, 20);
+    _flashBtn.frame = CGRectMake(CGRectGetWidth(self.view.bounds)-60, 60, 60, 30);
     _viewContainer.frame = CGRectMake(0, 44, APP_WIDTH, APP_WIDTH);
     _progressView.frame = CGRectMake(0, CGRectGetMaxY(_viewContainer.frame), APP_WIDTH, 5);
     _dotLabel.frame = CGRectMake((APP_WIDTH - 5) * 0.5, APP_WIDTH + 60 , 5, 5);
@@ -217,14 +240,27 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _rightBtnFrame = CGRectOffset(_centerBtnFrame, 32 + btnW, 0);
     [self restoreBtn];
     _cameraBtn.frame = CGRectMake((APP_WIDTH - 67) * 0.5, CGRectGetMaxY(_centerBtnFrame) + 32, 67, 67);
-    _scanBtn.frame = CGRectMake(CGRectGetMaxX(_cameraBtn.frame) + 25, _cameraBtn.y, 100, 60);
+    CGFloat imageViewOriginX = CGRectGetWidth(self.view.bounds)-60-20;
+    _imageView.frame = CGRectMake(imageViewOriginX, CGRectGetMaxY(_centerBtnFrame) + 32, 60, 60);
+    _imageViewBtn.frame = _imageView.frame;
 }
 - (void)prepareUI {
     self.title = @"拍照";
     
-    _closeBtn = [[UIButton alloc] init];
+    _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_closeBtn setImage:[UIImage imageNamed:@"button_camera_close"] forState:UIControlStateNormal];
     [_closeBtn addTarget:self action:@selector(closeBtnClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    _wbSlider = [[UISlider alloc] init];
+    _wbSlider.minimumValue = 3000.0f;
+    _wbSlider.maximumValue = 12000.0f;
+    _wbSlider.value = 6000.0f;
+    [_wbSlider addTarget:self action:@selector(wbSliderMethod:) forControlEvents:UIControlEventValueChanged];
+    
+    _flashBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_flashBtn setTitle:@"开启" forState:UIControlStateNormal];
+    [_flashBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [_flashBtn addTarget:self action:@selector(flashBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     _viewContainer = [[UIView alloc] init];
     //添加滑动手势
@@ -235,6 +271,15 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     UISwipeGestureRecognizer *rightSwipGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipes:)];
     rightSwipGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
     [_viewContainer addGestureRecognizer:rightSwipGestureRecognizer];
+    
+    _imageView = [[UIImageView alloc] init];
+    _imageView.contentMode = UIViewContentModeScaleAspectFill;
+    _imageView.layer.masksToBounds = YES;
+    
+    _imageViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_imageViewBtn addTarget:self
+                      action:@selector(imageViewBtnClick:)
+            forControlEvents:UIControlEventTouchUpInside];
     
     _progressView = [[ProgressView alloc] initWithFrame:CGRectMake(0, APP_WIDTH + 44, APP_WIDTH, 5)];
     _progressView.totalTime = kVideoTotalTime;
@@ -262,16 +307,18 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_cameraBtn setImage:[UIImage imageNamed:@"button_camera_screen"] forState:UIControlStateNormal];
     [_cameraBtn addTarget:self action:@selector(cameraBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    _scanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_scanBtn setTitle:@"浏览照片" forState:UIControlStateNormal];
-    [_scanBtn addTarget:self action:@selector(scanBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - ButtonClick
 - (void)scanBtnClick:(UIButton *)btn{
+    [self pushToPictureScan:YES];
+}
+-(void)imageViewBtnClick:(UIButton *)btn{
+    [self pushToPictureScan:YES];
+}
+- (void)pushToPictureScan:(BOOL)animated{
     PictureScanViewController *scanVc = [[PictureScanViewController alloc] init];
-    [self.navigationController pushViewController:scanVc animated:YES];
+    [self.navigationController pushViewController:scanVc animated:animated];
 }
 - (void)closeBtnClick {
     NSDictionary *pathDic = [NSDictionary dictionary];
@@ -279,6 +326,33 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
                                                         object:nil
                                                       userInfo:pathDic];
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)wbSliderMethod:(id)sender{
+    UISlider *slider = (UISlider *)sender;
+    AVCaptureWhiteBalanceTemperatureAndTintValues temperatureAndTint = {
+        .temperature = slider.value,
+        .tint = 0,
+    };
+    AVCaptureWhiteBalanceGains wbGains = [_captureDevice deviceWhiteBalanceGainsForTemperatureAndTintValues:temperatureAndTint];
+    [_captureDevice lockForConfiguration:nil];
+    [_captureDevice setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:wbGains completionHandler:nil];
+    [_captureDevice unlockForConfiguration];
+}
+
+- (void)flashBtnClick:(id)sender{
+    UIButton *btn = (UIButton *)sender;
+    btn.selected = !btn.selected;
+    
+    [_captureDevice lockForConfiguration:nil];
+    if (btn.isSelected) {
+        [_flashBtn setTitle:@"关闭" forState:UIControlStateNormal];
+        [_captureDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(0.05, 1000) ISO:40.0 completionHandler:nil];
+    }else{
+        [_flashBtn setTitle:@"开启" forState:UIControlStateNormal];
+        [_captureDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(0.05, 1000) ISO:80.0 completionHandler:nil];
+    }
+    [_captureDevice unlockForConfiguration];
 }
 
 - (void)handleSwipes:(UISwipeGestureRecognizer *)sender{
@@ -332,6 +406,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 - (void)saveTakenPictureData:(NSData *)imgData{
     UIImage *image = [UIImage imageWithData:imgData];
     UIImage *saveImg = [UIImage imageWithCGImage:[self handleImage:image]];
+    _imageView.image = saveImg;
     NSData *saveImgData = UIImageJPEGRepresentation(saveImg, 1.0f);
     
     JRMediaFileManage *fileManage = [JRMediaFileManage shareInstance];
