@@ -23,6 +23,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 #define kVideoLimit 10
 
 @interface WYVideoCaptureController (){
+    UIBarButtonItem *_leftItem;
     CGRect _leftBtnFrame;
     CGRect _centerBtnFrame;
     CGRect _rightBtnFrame;
@@ -53,12 +54,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 @property (nonatomic, strong) AVCaptureStillImageOutput *captureStillImageOutput;
 /// 相机拍摄预览层
 @property (nonatomic, strong) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
-/// 是否允许旋转 (注意在旋转过程中禁止屏幕旋转)
-@property (nonatomic, assign, getter=isEnableRotation) BOOL enableRotation;
-/// 旋转前的屏幕大小
-//@property (nonatomic, assign) CGRect lastBounds;
-/// 后台任务标识
-@property (nonatomic, assign) UIBackgroundTaskIdentifier backgroundTaskIndentifier;
 
 @end
 
@@ -67,6 +62,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self configureNavgationBar];
     [self setupUI];
     [self ChangeToLeft:YES];
     [self setupCaptureView];
@@ -79,14 +75,9 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     }
     
 }
-/// 隐藏状态栏
-- (BOOL)prefersStatusBarHidden {
-    return YES;
-}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
     [self initTakenParameters];
 }
 
@@ -101,6 +92,18 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 
 - (void)dealloc {
     NSLog(@"我是拍照控制器,我被销毁了");
+}
+
+- (void)configureNavgationBar{
+    _leftItem = [[UIBarButtonItem alloc] initWithTitle:@"取消"
+                                                 style:UIBarButtonItemStylePlain
+                                                target:self
+                                                action:@selector(leftBarButtonItemAction)];
+    self.navigationItem.leftBarButtonItem = _leftItem;
+}
+
+- (void)leftBarButtonItemAction{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)cleanOlderData{
@@ -192,20 +195,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     
 }
 
-#pragma mark - SuperMethod
-- (BOOL)shouldAutorotate {
-    return self.isEnableRotation;
-}
-/// 屏幕旋转时调整视频预览图层的方向
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    AVCaptureConnection *captureConnection = [_captureVideoPreviewLayer connection];
-    captureConnection.videoOrientation = (AVCaptureVideoOrientation)toInterfaceOrientation;
-}
-/// 旋转后重新设置大小
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    _captureVideoPreviewLayer.frame = _viewContainer.bounds;
-}
-
 #pragma mark - UI设计
 - (void)setupUI {
     [self prepareUI];
@@ -228,7 +217,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     CGFloat sliderOriginY = 44+APP_WIDTH-40;
     _wbSlider.frame = CGRectMake(sliderOriginX, sliderOriginY, 200, 20);
     _flashBtn.frame = CGRectMake(CGRectGetWidth(self.view.bounds)-60, 60, 60, 30);
-    _viewContainer.frame = CGRectMake(0, 44, APP_WIDTH, APP_WIDTH);
+    _viewContainer.frame = CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT-64);
     _progressView.frame = CGRectMake(0, CGRectGetMaxY(_viewContainer.frame), APP_WIDTH, 5);
     _dotLabel.frame = CGRectMake((APP_WIDTH - 5) * 0.5, APP_WIDTH + 60 , 5, 5);
     CGFloat btnW = 40;
