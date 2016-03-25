@@ -279,20 +279,20 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _dotLabel = [[UILabel alloc] init];  // 5 - 5
     _dotLabel.layer.cornerRadius = 2.5;
     _dotLabel.clipsToBounds = YES;
-    _dotLabel.backgroundColor = RGB(0xffc437);
+    _dotLabel.backgroundColor = RGB(0x76c000);
     
     _leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_leftBtn setTitle:@"左眼" forState:UIControlStateNormal];
-    [_leftBtn setTitleColor:RGB(0xfefeff) forState:UIControlStateNormal];
+    [_leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _leftBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
     [_leftBtn addTarget:self action:@selector(leftBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     _centerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_centerBtn setTitleColor:RGB(0xffc437) forState:UIControlStateNormal];
+    [_centerBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_centerBtn setTitle:@"左眼" forState:UIControlStateNormal];
     _centerBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
     _rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_rightBtn setTitle:@"右眼" forState:UIControlStateNormal];
-    [_rightBtn setTitleColor:RGB(0xfefeff) forState:UIControlStateNormal];
+    [_rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _rightBtn.titleLabel.font = [UIFont systemFontOfSize:15.0];
     [_rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -374,7 +374,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 
 - (void)leftBtnClick:(UIButton *)btn {
-    [_centerBtn setTitleColor:RGB(0xfefeff) forState:UIControlStateNormal];
     _dotLabel.hidden = YES;
     [UIView animateWithDuration:kAnimationDuration animations:^{
         _leftBtn.frame = _centerBtnFrame;
@@ -384,7 +383,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     }];
 }
 - (void)rightBtnClick:(UIButton *)btn {
-    [_centerBtn setTitleColor:RGB(0xfefeff) forState:UIControlStateNormal];
     _dotLabel.hidden = YES;
     [UIView animateWithDuration:kAnimationDuration animations:^{
         _rightBtn.frame = _centerBtnFrame;
@@ -432,7 +430,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _centerBtn.frame = _centerBtnFrame;
     _rightBtn.frame = _rightBtnFrame;
     _dotLabel.hidden = NO;
-    [_centerBtn setTitleColor:RGB(0xffc437) forState:UIControlStateNormal];
+    [_centerBtn setTitleColor:RGB(0x76c000) forState:UIControlStateNormal];
 }
 
 - (void)initTakenParameters{
