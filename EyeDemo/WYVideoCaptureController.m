@@ -45,6 +45,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIButton *imageViewBtn;
 @property (nonatomic, strong) UIView *toolView;
+@property (nonatomic, strong) UIImageView *ISOImgView;
 
 /// 负责输入和输出设备之间数据传递
 @property (nonatomic, strong) AVCaptureSession *captureSession;
@@ -206,6 +207,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self.view addSubview:_flashBtn];
     //[self.view addSubview:_progressView];
     [self.view addSubview:self.toolView];
+    [self.view addSubview:self.ISOImgView];
     [self.view addSubview:_imageView];
     [self.view addSubview:_imageViewBtn];
     
@@ -302,6 +304,19 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 
 #pragma mark - View
+- (UIImageView *)ISOImgView{
+    if (!_ISOImgView) {
+        UIImage *ISOImg = [UIImage imageNamed:@"iso-icon"];
+        CGFloat ISOWidth = ISOImg.size.width;
+        CGFloat ISOHeight = ISOImg.size.height;
+        CGFloat ISOOriginX = APP_WIDTH-(30.0f/2.0f)-ISOWidth;
+        CGFloat ISOOriginY = 64.0f + (45.0f/2.0f);
+        _ISOImgView = [[UIImageView alloc] initWithFrame:CGRectMake(ISOOriginX, ISOOriginY, ISOWidth, ISOHeight)];
+        _ISOImgView.image = ISOImg;
+    }
+    return _ISOImgView;
+}
+
 - (UIView *)toolView{
     if (!_toolView) {
         CGFloat toolWidth = APP_WIDTH;
