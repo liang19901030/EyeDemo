@@ -46,6 +46,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 @property (nonatomic, strong) UIView *toolView;
 @property (nonatomic, strong) UIImageView *ISOImgView;
 @property (nonatomic, strong) UIButton *ISOBtn;
+@property (nonatomic, strong) UIView *whiteBalanceView;
 
 /// 负责输入和输出设备之间数据传递
 @property (nonatomic, strong) AVCaptureSession *captureSession;
@@ -205,6 +206,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self.view addSubview:_viewContainer];
     [self.view addSubview:_wbSlider];
     //[self.view addSubview:_progressView];
+    [self.view addSubview:self.whiteBalanceView];
     [self.view addSubview:self.toolView];
     [self.view addSubview:self.ISOImgView];
     [self.view addSubview:self.ISOBtn];
@@ -334,9 +336,24 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         CGFloat toolOriginY = APP_HEIGHT-toolHeight;
         _toolView = [[UIView alloc] initWithFrame:CGRectMake(toolOriginX, toolOriginY, toolWidth, toolHeight)];
         _toolView.backgroundColor = RGB(0x000000);
-        _toolView.alpha = 0.8f;
+        _toolView.alpha = 0.6f;
     }
     return _toolView;
+}
+
+- (UIView *)whiteBalanceView{
+    if (!_whiteBalanceView) {
+        CGFloat width = 553.0f/2.0f;
+        CGFloat height = 44.0f/2.0f;
+        CGFloat originX = (APP_WIDTH-width)/2.0f;
+        CGFloat originY = APP_HEIGHT - (324.0f+62.0f+44.0f)/2.0f;
+        _whiteBalanceView = [[UIView alloc] initWithFrame:CGRectMake(originX, originY, width, height)];
+        _whiteBalanceView.backgroundColor = RGB(0x000000);
+        _whiteBalanceView.alpha = 0.8f;
+        _whiteBalanceView.layer.cornerRadius = 5.0f;
+        _whiteBalanceView.layer.masksToBounds = YES;
+    }
+    return _whiteBalanceView;
 }
 
 #pragma mark - ButtonClick
