@@ -44,6 +44,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 @property (nonatomic, strong) UIButton *cameraBtn;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIButton *imageViewBtn;
+@property (nonatomic, strong) UIView *toolView;
 
 /// 负责输入和输出设备之间数据传递
 @property (nonatomic, strong) AVCaptureSession *captureSession;
@@ -296,6 +297,20 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [_cameraBtn setImage:[UIImage imageNamed:@"button_camera_screen"] forState:UIControlStateNormal];
     [_cameraBtn addTarget:self action:@selector(cameraBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+#pragma mark - View
+- (UIView *)toolView{
+    if (!_toolView) {
+        CGFloat toolWidth = APP_WIDTH;
+        CGFloat toolHeight = 324.0f/2.0f;
+        CGFloat toolOriginX = 0.0f;
+        CGFloat toolOriginY = APP_HEIGHT-toolHeight-64.0f;
+        _toolView = [[UIView alloc] initWithFrame:CGRectMake(toolOriginX, toolOriginY, toolWidth, toolHeight)];
+        _toolView.backgroundColor = RGB(0x000000);
+        _toolView.alpha = 0.8f;
+    }
+    return _toolView;
 }
 
 #pragma mark - ButtonClick
