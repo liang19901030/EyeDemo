@@ -34,7 +34,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 @property (nonatomic, strong) UIButton *closeBtn;
 @property (nonatomic, strong) UISlider *wbSlider;
-@property (nonatomic, strong) UIButton *flashBtn;
 @property (nonatomic, strong) UIView *viewContainer;
 @property (nonatomic, strong) ProgressView *progressView;
 @property (nonatomic, strong) UILabel *dotLabel;
@@ -205,7 +204,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self.view addSubview:_closeBtn];
     [self.view addSubview:_viewContainer];
     [self.view addSubview:_wbSlider];
-    [self.view addSubview:_flashBtn];
     //[self.view addSubview:_progressView];
     [self.view addSubview:self.toolView];
     [self.view addSubview:self.ISOImgView];
@@ -223,7 +221,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     CGFloat sliderOriginX = (CGRectGetWidth(self.view.bounds)-200)/2.0;
     CGFloat sliderOriginY = 44+APP_WIDTH-40;
     _wbSlider.frame = CGRectMake(sliderOriginX, sliderOriginY, 200, 20);
-    _flashBtn.frame = CGRectMake(CGRectGetWidth(self.view.bounds)-60, 60, 60, 30);
     _viewContainer.frame = CGRectMake(0, 64, APP_WIDTH, APP_HEIGHT-64);
     _progressView.frame = CGRectMake(0, CGRectGetMaxY(_viewContainer.frame), APP_WIDTH, 5);
     _dotLabel.frame = CGRectMake((APP_WIDTH - 5) * 0.5, (30.0f/2.0f) , 5, 5);
@@ -252,11 +249,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _wbSlider.maximumValue = 12000.0f;
     _wbSlider.value = 6000.0f;
     [_wbSlider addTarget:self action:@selector(wbSliderMethod:) forControlEvents:UIControlEventValueChanged];
-    
-    _flashBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_flashBtn setTitle:@"开启" forState:UIControlStateNormal];
-    [_flashBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [_flashBtn addTarget:self action:@selector(flashBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     _viewContainer = [[UIView alloc] init];
     //添加滑动手势
@@ -384,10 +376,8 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     
     [_captureDevice lockForConfiguration:nil];
     if (btn.isSelected) {
-        [_flashBtn setTitle:@"关闭" forState:UIControlStateNormal];
         [_captureDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(0.05, 1000) ISO:40.0 completionHandler:nil];
     }else{
-        [_flashBtn setTitle:@"开启" forState:UIControlStateNormal];
         [_captureDevice setExposureModeCustomWithDuration:CMTimeMakeWithSeconds(0.05, 1000) ISO:80.0 completionHandler:nil];
     }
     [_captureDevice unlockForConfiguration];
