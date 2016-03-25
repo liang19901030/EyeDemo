@@ -46,6 +46,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 @property (nonatomic, strong) UIButton *imageViewBtn;
 @property (nonatomic, strong) UIView *toolView;
 @property (nonatomic, strong) UIImageView *ISOImgView;
+@property (nonatomic, strong) UIButton *ISOBtn;
 
 /// 负责输入和输出设备之间数据传递
 @property (nonatomic, strong) AVCaptureSession *captureSession;
@@ -208,6 +209,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     //[self.view addSubview:_progressView];
     [self.view addSubview:self.toolView];
     [self.view addSubview:self.ISOImgView];
+    [self.view addSubview:self.ISOBtn];
     [self.view addSubview:_imageView];
     [self.view addSubview:_imageViewBtn];
     
@@ -315,6 +317,21 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         _ISOImgView.image = ISOImg;
     }
     return _ISOImgView;
+}
+
+- (UIButton *)ISOBtn{
+    if (!_ISOBtn) {
+        UIImage *ISOImg = [UIImage imageNamed:@"whiteBalance"];
+        CGFloat ISOWidth = ISOImg.size.width;
+        CGFloat ISOHeight = ISOImg.size.height;
+        CGFloat ISOOriginX = APP_WIDTH-(30.0f/2.0f)-ISOWidth;
+        CGFloat ISOOriginY = CGRectGetMaxY(_ISOImgView.frame) + (28.0f/2.0f);
+        _ISOBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _ISOBtn.frame = CGRectMake(ISOOriginX, ISOOriginY, ISOWidth, ISOHeight);
+        [_ISOBtn setBackgroundImage:ISOImg forState:UIControlStateNormal];
+        [_ISOBtn addTarget:self action:@selector(flashBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _ISOBtn;
 }
 
 - (UIView *)toolView{
