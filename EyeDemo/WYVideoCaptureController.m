@@ -352,6 +352,24 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         _whiteBalanceView.alpha = 0.8f;
         _whiteBalanceView.layer.cornerRadius = 5.0f;
         _whiteBalanceView.layer.masksToBounds = YES;
+        
+        UIImage *leftImg = [UIImage imageNamed:@"whiteBalanceLefticon"];
+        CGFloat leftWitdth = leftImg.size.width;
+        CGFloat leftHeight = leftImg.size.height;
+        CGFloat leftOriginX = 22.0f/2.0f;
+        CGFloat leftOriginY = (height-leftHeight)/2.0f;
+        UIImageView *leftImgView = [[UIImageView alloc] initWithFrame:CGRectMake(leftOriginX, leftOriginY, leftWitdth, leftHeight)];
+        leftImgView.image = leftImg;
+        [_whiteBalanceView addSubview:leftImgView];
+        
+        UIImage *rightImg = [UIImage imageNamed:@"whiteBalanceRighticon"];
+        CGFloat rightWitdth = leftImg.size.width;
+        CGFloat rightHeight = leftImg.size.height;
+        CGFloat rightOriginX = width - rightWitdth - 22.0f/2.0f;
+        CGFloat rightOriginY = (height-rightHeight)/2.0f;
+        UIImageView *rightImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rightOriginX, rightOriginY, rightWitdth, rightHeight)];
+        rightImgView.image = rightImg;
+        [_whiteBalanceView addSubview:rightImgView];
     }
     return _whiteBalanceView;
 }
