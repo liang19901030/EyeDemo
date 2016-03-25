@@ -317,7 +317,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         CGFloat ISOWidth = ISOImg.size.width;
         CGFloat ISOHeight = ISOImg.size.height;
         CGFloat ISOOriginX = APP_WIDTH-(30.0f/2.0f)-ISOWidth;
-        CGFloat ISOOriginY = CGRectGetMaxY(_ISOImgView.frame) + (28.0f/2.0f);
+        CGFloat ISOOriginY = CGRectGetMaxY(_ISOImgView.frame) + (10.0f/2.0f);
         _ISOBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _ISOBtn.frame = CGRectMake(ISOOriginX, ISOOriginY, ISOWidth, ISOHeight);
         [_ISOBtn setBackgroundImage:ISOImg forState:UIControlStateNormal];
