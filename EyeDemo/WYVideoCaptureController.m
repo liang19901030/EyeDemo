@@ -204,10 +204,11 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [self.view addSubview:_viewContainer];
     [self.view addSubview:_wbSlider];
     [self.view addSubview:_flashBtn];
-    [self.view addSubview:_imageView];
-    [self.view addSubview:_imageViewBtn];
     //[self.view addSubview:_progressView];
     [self.view addSubview:self.toolView];
+    [self.view addSubview:_imageView];
+    [self.view addSubview:_imageViewBtn];
+    
     [self.toolView addSubview:_dotLabel];
     [self.toolView addSubview:_leftBtn];
     [self.toolView addSubview:_centerBtn];
@@ -230,9 +231,9 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     _centerBtnFrame = CGRectOffset(_leftBtnFrame, 32 + btnW, 0);
     _rightBtnFrame = CGRectOffset(_centerBtnFrame, 32 + btnW, 0);
     [self restoreBtn];
-    _cameraBtn.frame = CGRectMake((APP_WIDTH - 67) * 0.5, CGRectGetMaxY(_centerBtnFrame) + 26, 67, 67);
+    _cameraBtn.frame = CGRectMake((APP_WIDTH - 67) * 0.5, CGRectGetHeight(_toolView.bounds)-62-26, 62, 62);
     CGFloat imageViewOriginX = CGRectGetWidth(self.view.bounds)-60-20;
-    _imageView.frame = CGRectMake(imageViewOriginX, CGRectGetMaxY(_centerBtnFrame) + 26, 60, 60);
+    _imageView.frame = CGRectMake(imageViewOriginX, APP_HEIGHT-62-26, 60, 60);
     _imageViewBtn.frame = _imageView.frame;
 }
 - (void)prepareUI {
@@ -296,7 +297,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     [_rightBtn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_cameraBtn setImage:[UIImage imageNamed:@"button_camera_screen"] forState:UIControlStateNormal];
+    [_cameraBtn setImage:[UIImage imageNamed:@"takePhoto"] forState:UIControlStateNormal];
     [_cameraBtn addTarget:self action:@selector(cameraBtnClick:) forControlEvents:UIControlEventTouchUpInside];
 }
 
