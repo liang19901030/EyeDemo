@@ -344,30 +344,17 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
         _whiteBalanceView.layer.masksToBounds = YES;
         
         UIImage *leftImg = [UIImage imageNamed:@"whiteBalanceLefticon"];
-        CGFloat leftWitdth = leftImg.size.width;
-        CGFloat leftHeight = leftImg.size.height;
-        CGFloat leftOriginX = 22.0f/2.0f;
-        CGFloat leftOriginY = (height-leftHeight)/2.0f;
-        UIImageView *leftImgView = [[UIImageView alloc] initWithFrame:CGRectMake(leftOriginX, leftOriginY, leftWitdth, leftHeight)];
-        leftImgView.image = leftImg;
-        [_whiteBalanceView addSubview:leftImgView];
-        
         UIImage *rightImg = [UIImage imageNamed:@"whiteBalanceRighticon"];
-        CGFloat rightWitdth = leftImg.size.width;
-        CGFloat rightHeight = leftImg.size.height;
-        CGFloat rightOriginX = width - rightWitdth - 22.0f/2.0f;
-        CGFloat rightOriginY = (height-rightHeight)/2.0f;
-        UIImageView *rightImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rightOriginX, rightOriginY, rightWitdth, rightHeight)];
-        rightImgView.image = rightImg;
-        [_whiteBalanceView addSubview:rightImgView];
-        
-        CGFloat sliderOriginX = leftWitdth + (22.0f+22.0f)/2.0f;
+
+        CGFloat sliderOriginX = 22.0f/2.0f;
         CGFloat sliderOriginY = 0.0f;
-        CGFloat sliderWidth = width - sliderOriginX - (rightWitdth + (22.0f+22.0f)/2.0f);
+        CGFloat sliderWidth = width - (22.0f+22.0f)/2.0f;
         _wbSlider = [[UISlider alloc] initWithFrame:CGRectMake(sliderOriginX, sliderOriginY, sliderWidth, height)];
         _wbSlider.minimumValue = 3000.0f;
         _wbSlider.maximumValue = 12000.0f;
         _wbSlider.value = 6000.0f;
+        _wbSlider.minimumValueImage = leftImg;
+        _wbSlider.maximumValueImage = rightImg;
         [_wbSlider addTarget:self action:@selector(wbSliderMethod:) forControlEvents:UIControlEventValueChanged];
         [_whiteBalanceView addSubview:_wbSlider];
     }
