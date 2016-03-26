@@ -81,6 +81,7 @@
 		5D270CBE1CA540BB00A0B348 /* whiteBalanceLefticon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteBalanceLefticon@3x.png"; sourceTree = "<group>"; };
 		5D270CC01CA5427700A0B348 /* whiteBalanceRighticon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteBalanceRighticon@3x.png"; sourceTree = "<group>"; };
 		5D270CC21CA5428800A0B348 /* whiteBalanceRighticon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteBalanceRighticon@2x.png"; sourceTree = "<group>"; };
+		5D32D2731CA635F400795CE7 /* TDHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDHeader.h; sourceTree = "<group>"; };
 		5D6B83021C8E9709004EB9B1 /* EyeDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EyeDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D6B83061C8E9709004EB9B1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5D6B83081C8E9709004EB9B1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -196,6 +197,7 @@
 				5D6B83091C8E9709004EB9B1 /* AppDelegate.m */,
 				5D6B830B1C8E9709004EB9B1 /* ViewController.h */,
 				5D6B830C1C8E9709004EB9B1 /* ViewController.m */,
+				5D32D2731CA635F400795CE7 /* TDHeader.h */,
 				5D6B83441C8E97C6004EB9B1 /* WYVideoCaptureController.h */,
 				5D6B83451C8E97C6004EB9B1 /* WYVideoCaptureController.m */,
 				5D6B83EB1C901E09004EB9B1 /* JRPictureModel.h */,
