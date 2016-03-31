@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "WYVideoCaptureController.h"
+#import "TDNavgationController.h"
 
 @interface ViewController ()
 
@@ -22,7 +23,7 @@
 
 - (IBAction)takeButtonClick:(UIButton *)sender {
     WYVideoCaptureController *videoVC = [[WYVideoCaptureController alloc] init];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:videoVC];
+    TDNavgationController *nav = [[TDNavgationController alloc] initWithRootViewController:videoVC];
     [self presentViewController:nav animated:YES completion:nil];
 }
 
