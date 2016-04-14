@@ -121,8 +121,8 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 - (void)setupCaptureView {
     // 1.初始化会话
     _captureSession = [[AVCaptureSession alloc] init];
-    if ([_captureSession canSetSessionPreset:AVCaptureSessionPreset1280x720]) {
-        [_captureSession setSessionPreset:AVCaptureSessionPreset1280x720]; // 设置分辨率
+    if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetPhoto]) {
+        [_captureSession setSessionPreset:AVCaptureSessionPresetPhoto]; // 设置分辨率
     }
     // 2.获得输入设备
     self.captureDevice = [self getCameraDeviceWithPosition:AVCaptureDevicePositionBack];
@@ -130,6 +130,14 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     if (_captureDevice == nil) {
         NSLog(@"获取输入设备失败");
         return;
+    }
+    NSError *err;
+    if([_captureDevice lockForConfiguration:&err]){
+        [_captureDevice setFocusPointOfInterest:CGPointMake(0.5, 0.5)];
+        [_captureDevice setFocusMode:AVCaptureFocusModeAutoFocus];
+        [_captureDevice unlockForConfiguration];
+    }else{
+        NSLog(@"未能锁定对焦模式");
     }
     // 4.根据输入设备初始化设备输入对象,用于获得输入数据
     NSError *error = nil;
@@ -452,6 +460,24 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 
 - (void)takePictureMethod{
+    if([_captureDevice isAdjustingFocus]){
+        [_captureDevice addObserver:self forKeyPath:@"adjustingFocus" options:NSKeyValueObservingOptionNew context:nil];
+    }else{
+        [self takePictureMethodCore];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context{
+    if([keyPath isEqualToString:@"adjustingFocus"]){
+        BOOL adjustingFocus = [ [change objectForKey:NSKeyValueChangeNewKey] isEqualToNumber:[NSNumber numberWithInt:1]];
+        if(!adjustingFocus){
+            [_captureDevice removeObserver:self forKeyPath:@"adjustingFocus"];
+            [self takePictureMethodCore];
+        }
+    }
+}
+
+- (void)takePictureMethodCore{
     if (_isLeftEye) {
         _leftTakenPictureCount++;
     }else{
