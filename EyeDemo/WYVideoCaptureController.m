@@ -519,10 +519,6 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
 }
 
 - (void)saveTakenPictureData:(NSData *)imgData{
-    UIImage *image = [UIImage imageWithData:imgData];
-    UIImage *saveImg = [UIImage imageWithCGImage:[self handleImage:image]];
-    NSData *saveImgData = UIImageJPEGRepresentation(saveImg, 1.0f);
-    
     JRMediaFileManage *fileManage = [JRMediaFileManage shareInstance];
     NSString *filePath = [fileManage getJRMediaPathWithType:_isLeftEye];
     NSString *imageName;
@@ -534,7 +530,7 @@ typedef void(^PropertyChangeBlock)(AVCaptureDevice *captureDevice);
     NSString *imgPath = [NSString stringWithFormat:@"%@/%@",filePath,imageName];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL result = [fileManager createFileAtPath:imgPath
-                                       contents:saveImgData
+                                       contents:imgData
                                      attributes:nil];
     NSLog(@"result:%d",result);
     [self pushToPictureScan:YES];
